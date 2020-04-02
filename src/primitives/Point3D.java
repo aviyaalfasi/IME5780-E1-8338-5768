@@ -135,8 +135,12 @@ public final class Point3D {
      */
     public double distanceSquared(Point3D vertex)
     {
-        Vector distance = this.subtract(vertex);
-        return distance.lengthSquared();
+        try{
+            Vector distance = this.subtract(vertex);
+            return distance.lengthSquared();
+        }catch (Exception ex){
+            return 0.0;
+        }
     }
 
     /**

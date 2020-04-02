@@ -2,6 +2,8 @@ package geometries;
 
 import primitives.Point3D;
 import primitives.Vector;
+import primitives.Ray;
+import static primitives.Util.*;
 
 /**
  * Class Sphere is the basic class representing a sphere. This class extends Radial Geometries class, which implements the Geometry interface.
@@ -29,8 +31,10 @@ public final class Sphere extends RadialGeometry {
      * get normal to received point
      */
     @Override
-    public Vector getNormal(Point3D point3D) {
-        return null;
+    public Vector getNormal(Point3D point3D)
+    {
+        Vector r=new Vector(point3D.subtract(_center));
+        return r.normalized();
     }
 
     /**

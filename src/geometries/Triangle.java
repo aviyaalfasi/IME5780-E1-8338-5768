@@ -17,15 +17,7 @@ public final class Triangle extends Polygon {
      */
     public Triangle(Point3D _p1, Point3D _p2, Point3D _p3)
     {
-        super(_p1, _p2, _p3);
-    }
-
-    /**
-     * get normal to received point
-     */
-    @Override
-    public Vector getNormal(Point3D point) {
-        return super.getNormal(point);
+        super(_p1,_p2,_p3);
     }
 
     /**

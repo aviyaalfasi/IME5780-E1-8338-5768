@@ -189,4 +189,8 @@ public final class Vector {
         }
     }
 
+    public Vector scale(double scalingFactor){
+        return new Vector(this._head._x.get() * scalingFactor, this._head._y.get() * scalingFactor, this._head._z.get() * scalingFactor);
+    }
+
 }
