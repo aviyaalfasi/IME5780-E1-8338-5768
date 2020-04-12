@@ -7,7 +7,7 @@ import primitives.Vector;
  *Geometry Interface- all geometries implement this interface.
  * @author Aviya and Sima
  */
-public interface Geometry {
+public interface Geometry extends Intersectable {
     /*
     getNormal- allows to find the normal to every point on the geometry. In each geometry the calculation of this normal is different.
      */

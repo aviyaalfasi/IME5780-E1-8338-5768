@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point3D;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * Class Plane is the basic class representing a plane. It implements the Geometry interface.
@@ -59,5 +62,10 @@ public final class Plane implements Geometry {
     @Override
     public String toString() {
         return "Plane{ normal= "+_normal+" point= "+_point+" }";
+    }
+
+    @Override
+    public List<Point3D> findIntsersections(Ray ray) {
+        return null;
     }
 }

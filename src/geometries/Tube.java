@@ -4,6 +4,9 @@ package geometries;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
+
 import static primitives.Util.*;
 
 /**
@@ -58,5 +61,10 @@ public class Tube extends RadialGeometry {
     @Override
     public String toString() {
         return "Tube{ "+super.toString()+ " axis ray= "+_axisRay+" }";
+    }
+
+    @Override
+    public List<Point3D> findIntsersections(Ray ray) {
+        return null;
     }
 }
