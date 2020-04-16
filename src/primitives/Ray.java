@@ -1,5 +1,6 @@
 package primitives;
 
+import static primitives.Util.*;
 import java.util.Objects;
 
 /**
@@ -77,5 +78,15 @@ public final class Ray {
                 '}';
     }
 
-
+    /**
+     * receives a number and returns the point that is that distance away from the head of the ray
+     * @param t
+     * @return the point that the distance from it to the head of the ray is t
+     */
+    public Point3D getPoint(double t)
+    {
+        if(isZero(t))
+            return _point0;
+        return _point0.add(_direction.scale(t));
+    }
 }

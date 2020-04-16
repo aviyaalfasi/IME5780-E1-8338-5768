@@ -2,6 +2,10 @@ package geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -93,4 +97,46 @@ public class PolygonTest {
         double sqrt3 = Math.sqrt(1d / 3);
         assertEquals(new Vector(sqrt3, sqrt3, sqrt3), pl.getNormal(new Point3D(0, 0, 1)), "Bad normal to trinagle");
     }
+
+    @Test
+    public void testFindIntersections() {
+        Polygon p = new Polygon(new Point3D(4.0, 4.0, 0.0), new Point3D(4.0, 4.0, 4.0), new Point3D(-4.0, 4.0, 4.0), new Point3D(-4.0, 4.0, 0.0));
+
+        // ============ Equivalence Partitions Tests ==============
+
+        //case 1- ray intersects with polygon
+        Ray r = new Ray(new Point3D(1.0, -5.0, 3.0), new Vector(0.0, 3.0, 0.0));
+        List<Point3D> l = p.findIntsersections(r);
+        List<Point3D> expectList = new ArrayList<Point3D>();
+        expectList.add(new Point3D(1.0, 4.0, 3.0));
+        assertEquals(expectList, l);
+
+        //case 2- ray intersects with plane but outside the polygon against edge
+        r = new Ray(new Point3D(6.0, -1.0, 0.0), new Vector(0.0, 3.0, 0.0));
+        l = p.findIntsersections(r);
+        assertEquals(null, l);
+
+        //case 3- ray intersects with plane but outside the polygon against vertex
+        r = new Ray(new Point3D(5.0, 4.0, 4.0), new Vector(0.0, 3.0, 0.0));
+        l = p.findIntsersections(r);
+        assertEquals(null, l);
+
+        // =============== Boundary Values Tests ==================
+
+        //case 1- the ray begins before the plane on the edge of polygon
+        r = new Ray(new Point3D(4.0, 3.0, 0.0), new Vector(0.0, 1.0, 0.0));
+        l = p.findIntsersections(r);
+        assertEquals(null, l);
+
+        //case 2- the ray begins before the plane on vertex
+        r = new Ray(new Point3D(4.0, 3.0, 4.0), new Vector(0.0, 1.0, 0.0));
+        l = p.findIntsersections(r);
+        assertEquals(null, l);
+
+        //case 3- the ray begins before the plane on edge's continuation
+        r = new Ray(new Point3D(8.0, 2.0, 0.0), new Vector(0.0, 1.0, 0.0));
+        l = p.findIntsersections(r);
+        assertEquals(null, l);
+    }
+
 }
