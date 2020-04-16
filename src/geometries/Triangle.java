@@ -40,7 +40,7 @@ public final class Triangle extends Polygon {
         if (intersections == null)
             return null;
 
-        Point3D p0 = ray.get_point0();
+        Point3D p0 = ray.getPoint();
         Vector v = ray.get_direction();
 
         Vector v1 = _vertices.get(0).subtract(p0);

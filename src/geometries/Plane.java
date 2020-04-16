@@ -71,7 +71,7 @@ public final class Plane implements Geometry {
     {
         Vector p0Q;
         try {
-            p0Q = _point.subtract(ray.get_point0());
+            p0Q = _point.subtract(ray.getPoint());
         } catch (IllegalArgumentException e) {
             return null; // ray starts from point Q - no intersections
         }

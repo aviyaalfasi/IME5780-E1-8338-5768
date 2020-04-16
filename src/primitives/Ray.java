@@ -42,7 +42,7 @@ public final class Ray {
     /**
      * @return The starting point of the Ray - type: Point3D
      */
-    public Point3D get_point0() { return new Point3D(_point0); }
+    public Point3D getPoint() { return new Point3D(_point0); }
 
     /**
      * @return the direction vector of the ray - type: Vector
@@ -88,5 +88,13 @@ public final class Ray {
         if(isZero(t))
             return _point0;
         return _point0.add(_direction.scale(t));
+    }
+
+    public Vector getDirection() {
+        return new Vector(_direction);
+    }
+
+    public Point3D getTargetPoint(double length) {
+        return isZero(length ) ? _point0 : _point0.add(_direction.scale(length));
     }
 }

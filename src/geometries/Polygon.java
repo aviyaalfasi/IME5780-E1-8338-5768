@@ -93,7 +93,7 @@ public class Polygon implements Geometry {
         if (intersections == null)
             return null;
 
-        Point3D p0 = ray.get_point0();
+        Point3D p0 = ray.getPoint();
         Vector v = ray.get_direction();
 
         List<Vector> vecs = new ArrayList<Vector>();

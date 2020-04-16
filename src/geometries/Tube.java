@@ -36,7 +36,7 @@ public class Tube extends RadialGeometry {
     @Override
     public Vector getNormal(Point3D point3D) {
         //The vector from the point of the cylinder to the given point
-        Point3D o = _axisRay.get_point0();
+        Point3D o = _axisRay.getPoint();
         Vector v = _axisRay.get_direction();
 
         Vector vector1 = new Vector(point3D.subtract(o));
