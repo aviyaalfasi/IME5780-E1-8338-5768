@@ -14,7 +14,7 @@ class CylinderTest {
      */
     @Test
     void getNormal() {
-        Cylinder c=new Cylinder(4, new Ray(new Point3D(0.0,0.0,1.0), new Vector(0.0,0.0,2.0)), 8);
+        Cylinder c = new Cylinder(4.0, new Ray(new Point3D(0.0,0.0,1.0), new Vector(0.0,0.0,2.0)), 8.0);
 
         // ============ Equivalence Partitions Tests ==============
         //there are 3 parts- points on the side of the cylinder and on its bases
