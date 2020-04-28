@@ -101,6 +101,12 @@ public final class Point3D {
                 ')';
     }
 
+    public Point3D subtract(Vector v) {
+        return new Point3D(this._x._coord - v._head._x._coord,
+                this._y._coord - v._head._y._coord,
+                this._z._coord - v._head._z._coord);
+    }
+
     /**
      * subtract two Points3D
      * throw IllegalArgumentException in case the result vector is zero vector

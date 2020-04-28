@@ -110,6 +110,7 @@ public final class Vector {
         return new Vector(new Point3D(w1, w2, w3));
     }
 
+
     /**
      * subtract two vectors
      * throw IllegalArgumentException in case the result vector is zero vector
