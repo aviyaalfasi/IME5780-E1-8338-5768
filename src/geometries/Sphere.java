@@ -1,53 +1,61 @@
 package geometries;
 
-import primitives.Point3D;
-import primitives.Vector;
-import primitives.Ray;
+import primitives.*;
 
 import java.util.List;
+import java.util.Objects;
 
-import static primitives.Util.*;
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
-/**
- * Class Sphere is the basic class representing a sphere. This class extends Radial Geometries class, which implements the Geometry interface.
- * @author Aviya and Sima
- */
-
-public final class Sphere extends RadialGeometry {
-    /*
-    this class contains a radius (radial geometry) and a point that is the center of the sphere
+public class Sphere extends RadialGeometry {
+    /**
+     * The center of the sphere
      */
-    Point3D _center;
+    private final Point3D _center;
 
     /**
-     * Sphere constructor
-     * @param _radius sphere radius value
-     * @param _center sphere center point value
+     * constructor for a new sphere object.
+     *
+     * @param radius the radius of the sphere
+     * @param center the center point of the sphere
+     *
+     * @throws Exception in case of negative or zero radius from RadialGeometry constructor
      */
-    public Sphere(double _radius, Point3D _center)
-    {
-        super(_radius);
-        this._center = new Point3D(_center);
+    public Sphere(double radius, Point3D center) {
+        super(radius);
+        _center = new Point3D(center);
     }
 
-    /**
-     * get normal to received point
-     */
-    @Override
-    public Vector getNormal(Point3D point3D)
-    {
-        Vector r=new Vector(point3D.subtract(_center));
-        return r.normalized();
-    }
-
-    /**
-     * Returns a string containing shpere details using Radial Geometry toString method which prints radius value
-     *@return string containing sphere details
-     */
     @Override
     public String toString() {
-        return "Sphere{ "+super.toString()+" center= "+_center+" }";
+        return String.format
+                ("point: " + _center + ", radius: " + _radius);
     }
+
+    /**
+     * getter for the center property
+     *
+     * @return the center of the sphere
+     */
+    public Point3D getCenter() {
+        return new Point3D(_center);
+    }
+
+
+    /**
+     * get the normal to this sphere in a given point
+     */
+    @Override
+    public Vector getNormal(Point3D point) {
+        Vector normal = point.subtract(_center);
+        return normal.normalize();
+    }
+
+    public Point3D get_center() {
+        return _center;
+    }
+
 
     @Override
     public List<Point3D> findIntsersections(Ray ray) {

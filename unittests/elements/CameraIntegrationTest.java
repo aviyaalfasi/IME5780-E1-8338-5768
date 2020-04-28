@@ -19,25 +19,27 @@ public class CameraIntegrationTest {
 
     Camera camera1 = new Camera(Point3D.ZERO, new Vector(0, 0, 1), new Vector(0, -1, 0));
     Camera camera2 = new Camera(new Point3D(0, 0, -0.5), new Vector(0, 0, 1), new Vector(0, -1, 0));
+
     @Test
     void constructRayThroughPixelWithSphere() {
 
         // TC01: sphere r = 1, 2 intersection points
-        Sphere s =  new Sphere(1, new Point3D(0, 0, 3));
+        Sphere sph0 = new Sphere(1, new Point3D(0, 0, 3));
         List<Point3D> results1;
         int count = 0;
         // The number of pixels on the axes
-        int Nx =3;
-        int Ny =3;
+        int Nx = 3;
+        int Ny = 3;
         // A loop that summarizes all the intersection points with the ball from all pixels
         for (int i = 0; i < Ny; ++i) {
             for (int j = 0; j < Nx; ++j) {
-                results1 = s.findIntsersections(camera1.constructRayThroughPixel(Nx, Ny, j, i, 1, 3, 3));
+                Ray ray = camera1.constructRayThroughPixel(Nx, Ny, j, i, 1, 3, 3);
+                results1 = sph0.findIntsersections(ray);
                 if (results1 != null)
                     count += results1.size();
             }
         }
-        assertEquals(2,count);
+        assertEquals(2, count);
 
 
         //TC02: sphere r = 2.5, 18 intersection points
@@ -85,12 +87,14 @@ public class CameraIntegrationTest {
         // A loop that summarizes all the intersection points with the ball from all pixels
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
-                results4 = sph1.findIntsersections(camera2.constructRayThroughPixel(Nx, Ny, j, i, 1, 3, 3));
+                results4 = sph4.findIntsersections(camera1.constructRayThroughPixel(Nx, Ny, j, i, 1, 3, 3));
                 if (results4 != null)
                     count += results4.size();
             }
         }
         assertEquals(9,count);
+
+
 
 
         //TC05: sphere r = 0.5, 9 intersection points
@@ -103,7 +107,7 @@ public class CameraIntegrationTest {
         // A loop that summarizes all the intersection points with the ball from all pixels
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
-                results5 = sph1.findIntsersections(camera1.constructRayThroughPixel(Nx, Ny, j, i, 1, 3, 3));
+                results5 = sph5.findIntsersections(camera1.constructRayThroughPixel(Nx, Ny, j, i, 1, 3, 3));
                 if (results5 != null)
                     count += results5.size();
             }

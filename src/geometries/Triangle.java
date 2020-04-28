@@ -41,7 +41,7 @@ public final class Triangle extends Polygon {
             return null;
 
         Point3D p0 = ray.getPoint();
-        Vector v = ray.get_direction();
+        Vector v = ray.getDirection();
 
         Vector v1 = _vertices.get(0).subtract(p0);
         Vector v2 = _vertices.get(1).subtract(p0);

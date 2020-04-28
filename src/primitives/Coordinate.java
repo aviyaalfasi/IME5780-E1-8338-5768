@@ -18,7 +18,7 @@ public final class Coordinate {
     /**
      * Coordinate constructor receiving a coordinate value
      *
-     * @param coord coordinate value
+     * @param coord coordinate value as double
      */
     public Coordinate(double coord) {
         // if it too close to zero make it zero
@@ -28,7 +28,7 @@ public final class Coordinate {
     /**
      * Copy constructor for coordinate
      *
-     * @param other
+     * @param other source Coordinate
      */
     public Coordinate(Coordinate other) {
         _coord = other._coord;
@@ -37,7 +37,7 @@ public final class Coordinate {
     /**
      * Coordinate value getter
      *
-     * @return coordinate value
+     * @return coordinate value in double representation
      */
     public double get() {
         return _coord;

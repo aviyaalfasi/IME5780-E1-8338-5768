@@ -76,12 +76,12 @@ public final class Plane implements Geometry {
             return null; // ray starts from point Q - no intersections
         }
 
-        double nv = _normal.dotProduct(ray.get_direction());
+        double nv = _normal.dotProduct(ray.getDirection());
         if (isZero(nv)) // ray is parallel to the plane - no intersections
             return null;
 
         double t = alignZero(_normal.dotProduct(p0Q) / nv);
 
-        return t <= 0 ? null : List.of(ray.getPoint(t));
+        return t <= 0 ? null : List.of(ray.getTargetPoint(t));
     }
 }
