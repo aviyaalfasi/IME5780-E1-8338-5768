@@ -19,47 +19,47 @@ public class Scene {
         _geometries = new Geometries();
     }
 
-    public AmbientLight get_ambientLight() {
+    public AmbientLight getAmbientLight() {
         return _ambientLight;
     }
 
-    public Camera get_camera() {
+    public Camera getCamera() {
         return _camera;
     }
 
-    public Color get_background() {
+    public Color getBackground() {
         return _background;
     }
 
-    public double get_distance() {
+    public double getDistance() {
         return _distance;
     }
 
-    public Geometries get_geometries() {
+    public Geometries getGeometries() {
         return _geometries;
     }
 
-    public String get_name() {
+    public String getName() {
         return _name;
     }
 
-    public void set_ambientLight(AmbientLight _ambientLight) {
+    public void setAmbientLight(AmbientLight _ambientLight) {
         this._ambientLight = _ambientLight;
     }
 
-    public void set_distance(double _distance) {
+    public void setDistance(double _distance) {
         this._distance = _distance;
     }
 
-    public void set_background(Color _background) {
+    public void setBackground(Color _background) {
         this._background = _background;
     }
 
-    public void set_camera(Camera _camera) {
+    public void setCamera(Camera _camera) {
         this._camera = _camera;
     }
 
-    void addGeometries(Intersectable... geometries) {
+    public void addGeometries(Intersectable... geometries) {
         _geometries.add(geometries);
     }
 }
