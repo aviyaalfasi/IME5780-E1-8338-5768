@@ -1,21 +1,18 @@
 package renderer;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.Test;
 import elements.*;
 import geometries.*;
 import primitives.*;
-import renderer.ImageWriter;
-import renderer.Render;
 import scene.Scene;
 
 /**
- * Test rendering abasic image
+ * Test rendering a basic image
  *
  * @author Dan
  */
-public class RenderTests {
+public class RenderTest {
 
     /**
      * Produce a scene with basic 3D model and render it into a jpeg image with a
@@ -38,10 +35,10 @@ public class RenderTests {
                 new Triangle(new Point3D(-100, 0, 100), new Point3D(0, -100, 100), new Point3D(-100, -100, 100)));
 
         ImageWriter imageWriter = new ImageWriter("base render test", 500, 500, 500, 500);
-        Render render = new Render(imageWriter, scene);
+        Render render = new Render(scene, imageWriter);
 
         render.renderImage();
-        render.printGrid(50, java.awt.Color.YELLOW);
+        render.printGrid(50, new Color(java.awt.Color.YELLOW));
         render.writeToImage();
     }
 }
