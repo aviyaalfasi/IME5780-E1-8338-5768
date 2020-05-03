@@ -3,14 +3,17 @@ package renderer;
 import org.junit.jupiter.api.Test;
 import java.awt.*;
 
-
 /**
  * @author aviya and sima
  */
+
 class ImageWriterTest {
 
     @Test
     void writeToImage() {
+        /**
+         * Produce a scene with view plane size 1000*1600, resolution 500*800 and render it into a jpeg image with a 10*16 grid.
+         */
         String image_name = "MyFirstImageTest";
         int width = 1000;
         int height = 1600;
@@ -23,9 +26,5 @@ class ImageWriterTest {
                     imageWriter.writePixel(row, col, Color.YELLOW);
 
         imageWriter.writeToImage();
-
-
-
-
     }
 }

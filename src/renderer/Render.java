@@ -10,17 +10,27 @@ import scene.Scene;
 
 import java.util.List;
 
+/**
+ * @author aviya and sima
+ */
 
 public class Render {
     private Scene _scene;
     private ImageWriter _imageWriter;
 
-
+    /**
+     * constructor for Render that recieves two arguments
+     * @param _scene scene
+     * @param _imageWriter image writer
+     */
     public Render(Scene _scene, ImageWriter _imageWriter) {
         this._scene = _scene;
         this._imageWriter = _imageWriter;
     }
 
+    /**
+     * renders an image
+     */
     public void renderImage() {
         java.awt.Color background = _scene.getBackground().getColor();
         Camera camera = _scene.getCamera();
@@ -52,7 +62,11 @@ public class Render {
         }
     }
 
-
+    /**
+     * receives list of intersection points and returns the closest one to the camera
+     * @param intersectionPoints intersection points with ray
+     * @return closest point to camera
+     */
     private Point3D getClosestPoint(List<Point3D> intersectionPoints) {
         Point3D result = null;
         double min = Double.MAX_VALUE;
@@ -67,7 +81,11 @@ public class Render {
         return result;
     }
 
-
+    /**
+     * prints a grid on the image
+     * @param interval the interval between the lines
+     * @param color color of grid
+     */
     public void printGrid(int interval, Color color) {
         double rows = this._imageWriter.getNx();
         double columns = _imageWriter.getNy();
@@ -79,12 +97,18 @@ public class Render {
 
     }
 
-
+    /**
+     * calls the function writeToImage of the image writer in this renderer
+     */
     public void writeToImage() {
         _imageWriter.writeToImage();
     }
 
-
+    /**
+     * calculates the color of each point in the view plane
+     * @param point the point where color is calculated
+     * @return color in received point
+     */
     private java.awt.Color calcColor(Point3D point) {
         return _scene.getAmbientLight().getIntensity().getColor();
     }
