@@ -45,14 +45,14 @@ public class Geometries implements Intersectable {
      * @return list of Point3D that intersect the osef
      */
     @Override
-    public List<Point3D> findIntsersections(Ray ray) {
-        List<Point3D> intersections = null;
+    public List<GeoPoint> findIntsersections(Ray ray) {
+        List<GeoPoint> intersections = null;
 
         for (Intersectable geometry : _geometries) {
-            List<Point3D> tempIntersections = geometry.findIntsersections(ray);
+            List<GeoPoint> tempIntersections = geometry.findIntsersections(ray);
             if (tempIntersections != null) {
                 if (intersections == null)
-                    intersections = new ArrayList<Point3D>();
+                    intersections = new ArrayList<GeoPoint>();
                 intersections.addAll(tempIntersections);
             }
 

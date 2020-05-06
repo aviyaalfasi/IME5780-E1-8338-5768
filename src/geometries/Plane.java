@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.Color;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -12,7 +13,7 @@ import java.util.List;
  * Class Plane is the basic class representing a plane. It implements the Geometry interface.
  * @author Aviya and Sima
  */
-public final class Plane implements Geometry {
+public final class Plane extends Geometry {
     /*
     this class includes a point on the plane and the normal to that plane
      */
@@ -33,6 +34,15 @@ public final class Plane implements Geometry {
         _point = new Point3D(_p1);
     }
 
+    public Plane(Point3D _p1, Point3D _p2, Point3D _p3, Color _emmission)
+    {
+        super(_emmission);
+        Vector vector1 = new Vector(_p1.subtract(_p2));
+        Vector vector2 = new Vector(_p2.subtract(_p3));
+        _normal = new Vector(vector1.crossProduct(vector2));
+        _point = new Point3D(_p1);
+    }
+
     /**
      * Plane constructor
      * @param _normal normal value
@@ -40,6 +50,13 @@ public final class Plane implements Geometry {
      */
     public Plane(Vector _normal, Point3D _point)
     {
+        this._point = new Point3D(_point);
+        this._normal = new Vector(_normal);
+    }
+
+    public Plane(Vector _normal, Point3D _point, Color _emmission)
+    {
+        super(_emmission);
         this._point = new Point3D(_point);
         this._normal = new Vector(_normal);
     }
@@ -67,8 +84,7 @@ public final class Plane implements Geometry {
     }
 
     @Override
-    public List<Point3D> findIntsersections(Ray ray)
-    {
+    public List<GeoPoint> findIntsersections(Ray ray) {
         Vector p0Q;
         try {
             p0Q = _point.subtract(ray.getPoint());
@@ -82,6 +98,11 @@ public final class Plane implements Geometry {
 
         double t = alignZero(_normal.dotProduct(p0Q) / nv);
 
-        return t <= 0 ? null : List.of(ray.getTargetPoint(t));
+        if (t <= 0) {
+            return null;
+        }
+
+        GeoPoint geo = new GeoPoint(this, ray.getTargetPoint(t));
+        return List.of(geo);
     }
 }
