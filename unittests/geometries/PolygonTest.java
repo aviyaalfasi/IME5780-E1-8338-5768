@@ -109,7 +109,7 @@ public class PolygonTest {
         List<Intersectable.GeoPoint> l = p.findIntsersections(r);
         List<Point3D> expectList = new ArrayList<Point3D>();
         expectList.add(new Point3D(1.0, 4.0, 3.0));
-        assertEquals(expectList, l);
+        assertEquals(expectList,List.of(l.get(0).getPoint()));
 
         //case 2- ray intersects with plane but outside the polygon against edge
         r = new Ray(new Point3D(6.0, -1.0, 0.0), new Vector(0.0, 3.0, 0.0));

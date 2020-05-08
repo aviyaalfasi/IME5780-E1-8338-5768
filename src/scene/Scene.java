@@ -2,9 +2,14 @@ package scene;
 
 import elements.AmbientLight;
 import elements.Camera;
+import elements.LightSource;
 import geometries.Geometries;
 import geometries.Intersectable;
 import primitives.Color;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author aviya and sima
@@ -17,6 +22,7 @@ public class Scene {
     Geometries _geometries;
     Camera _camera;
     double _distance;
+    List<LightSource> _lights = null;
 
     /**
      * constructor for Scene- it receives the name of the scene and creates an empty list of geometries in the scene
@@ -25,6 +31,7 @@ public class Scene {
     public Scene(String name){
         _name = name;
         _geometries = new Geometries();
+        _lights = new LinkedList<LightSource>();
     }
 
     /**
@@ -113,5 +120,16 @@ public class Scene {
      */
     public void addGeometries(Intersectable... geometries) {
         _geometries.add(geometries);
+    }
+
+    public List<LightSource> getLightSources() {
+        return _lights;
+    }
+
+    public void addLights(LightSource... lights) {
+        for (LightSource light:lights) {
+            _lights.add(light);
+        }
+
     }
 }

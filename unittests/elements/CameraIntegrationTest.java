@@ -1,6 +1,7 @@
 package elements;
 
 import elements.Camera;
+import geometries.Intersectable;
 import geometries.Plane;
 import geometries.Sphere;
 import geometries.Triangle;
@@ -25,7 +26,7 @@ public class CameraIntegrationTest {
 
         // TC01: sphere r = 1, 2 intersection points
         Sphere sph0 = new Sphere(1, new Point3D(0, 0, 3));
-        List<Point3D> results1;
+        List<Intersectable.GeoPoint> results1;
         int count = 0;
         // The number of pixels on the axes
         int Nx = 3;
@@ -44,7 +45,7 @@ public class CameraIntegrationTest {
 
         //TC02: sphere r = 2.5, 18 intersection points
         Sphere sph1 =  new Sphere(2.5, new Point3D(0, 0, 2.5));
-        List<Point3D> results2;
+        List<Intersectable.GeoPoint> results2;
         count = 0;
         // The number of pixels on the axes
         Nx =3;
@@ -61,7 +62,7 @@ public class CameraIntegrationTest {
 
         //TC03: sphere r = 2, 10 intersection points
         Sphere sph3 =  new Sphere(2, new Point3D(0, 0, 2));
-        List<Point3D> results3;
+        List<Intersectable.GeoPoint> results3;
         count = 0;
         // The number of pixels on the axes
         Nx =3;
@@ -79,7 +80,7 @@ public class CameraIntegrationTest {
 
         // TC04: sphere r = 4, 9 intersection points
         Sphere sph4 =  new Sphere(4, new Point3D(0, 0, 0.5));
-        List<Point3D> results4;
+        List<Intersectable.GeoPoint> results4;
         count = 0;
         // The number of pixels on the axes
         Nx =3;
@@ -99,7 +100,7 @@ public class CameraIntegrationTest {
 
         //TC05: sphere r = 0.5, 9 intersection points
         Sphere sph5 =  new Sphere(0.5, new Point3D(0, 0, -1));
-        List<Point3D> results5;
+        List<Intersectable.GeoPoint> results5;
         count = 0;
         // The number of pixels on the axes
         Nx =3;
@@ -120,7 +121,7 @@ public class CameraIntegrationTest {
 
         //TC01 9 intersection points- plane against camera
         Plane p = new Plane(new Vector(0.0, 0.0, 5.0), new Point3D(0.0, 0.0, 1.0));
-        List<Point3D> results;
+        List<Intersectable.GeoPoint> results;
         int count = 0;
         int Nx = 3;
         int Ny = 3;
@@ -162,7 +163,7 @@ public class CameraIntegrationTest {
     void constructRayThroughPixelWithTriangle() {
         //TC01 1 intersection point
         Triangle t = new Triangle(new Point3D(0.0, -1.0, 2.0), new Point3D(1.0, 1.0, 2.0), new Point3D(-1.0, 1.0, 2.0));
-        List<Point3D> results;
+        List<Intersectable.GeoPoint> results;
         int count = 0;
         int Nx = 3;
         int Ny = 3;

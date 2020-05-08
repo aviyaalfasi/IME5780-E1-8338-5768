@@ -1,9 +1,7 @@
 package geometries;
 
-import primitives.Color;
-import primitives.Point3D;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
+
 import static primitives.Util.*;
 
 import java.util.ArrayList;
@@ -43,6 +41,12 @@ public final class Plane extends Geometry {
         _point = new Point3D(_p1);
     }
 
+    public Plane(Point3D _p1, Point3D _p2, Point3D _p3, Color _emmission, Material _material)
+    {
+        this(_p1, _p2, _p3, _emmission);
+        this._material = _material;
+    }
+
     /**
      * Plane constructor
      * @param _normal normal value
@@ -59,6 +63,12 @@ public final class Plane extends Geometry {
         super(_emmission);
         this._point = new Point3D(_point);
         this._normal = new Vector(_normal);
+    }
+
+    public Plane(Vector _normal, Point3D _point, Color _emmission, Material _material)
+    {
+        this(_normal, _point, _emmission);
+        this._material = _material;
     }
 
     /**

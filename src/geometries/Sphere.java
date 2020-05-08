@@ -32,6 +32,11 @@ public class Sphere extends RadialGeometry {
         _center = new Point3D(center);
     }
 
+    public Sphere(double radius, Point3D center, Color _emmission, Material _material) {
+        this(radius, center, _emmission);
+        this._material = _material;
+    }
+
     @Override
     public String toString() {
         return String.format

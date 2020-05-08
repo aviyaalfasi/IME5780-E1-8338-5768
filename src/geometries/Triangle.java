@@ -1,9 +1,6 @@
 package geometries;
 
-import primitives.Color;
-import primitives.Point3D;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.List;
 
@@ -28,6 +25,11 @@ public final class Triangle extends Polygon {
 
     public Triangle(Color _emmission, Point3D _p1, Point3D _p2, Point3D _p3) {
         super(_emmission, _p1, _p2, _p3);
+    }
+
+    public Triangle(Color _emmission, Material _material, Point3D _p1, Point3D _p2, Point3D _p3) {
+        this(_emmission, _p1, _p2, _p3);
+        this._material = _material;
     }
 
     /**

@@ -1,14 +1,15 @@
 package renderer;
 
 import elements.Camera;
+import elements.LightSource;
 import geometries.Intersectable.GeoPoint;
 import geometries.Intersectable;
-import primitives.Color;
-import primitives.Point3D;
-import primitives.Ray;
+import primitives.*;
 import scene.Scene;
 
 import java.util.List;
+
+import static primitives.Util.alignZero;
 
 /**
  * @author aviya and sima
@@ -110,8 +111,48 @@ public class Render {
      * @return color in received point
      */
     private java.awt.Color calcColor(GeoPoint point) {
-        return new Color(_scene.getAmbientLight().getIntensity().add(point.getGeometry().get_emmission())).getColor();
+        Color result = new Color(_scene.getAmbientLight().getIntensity());
+        result = result.add(point.getGeometry().getEmissionLight());
+
+        Vector v = point.getPoint().subtract(_scene.getCamera().get_p0()).normalize();
+        Vector n = point.getGeometry().getNormal(point.getPoint());
+
+        Material material = point.getGeometry().getMaterial();
+        int nShininess = material.getnShininess();
+        double kd = material.getKd();
+        double ks = material.getKs();
+        if (_scene.getLightSources() != null) {
+            for (LightSource lightSource : _scene.getLightSources()) {
+
+                Vector l = lightSource.getL(point.getPoint());
+                double nl = alignZero(n.dotProduct(l));
+                double nv = alignZero(n.dotProduct(v));
+
+                if (sign(nl) == sign(nv)) {
+                    Color ip = lightSource.getIntensity(point.getPoint());
+                    result = result.add(
+                            calcDiffusive(kd, nl, ip),
+                            calcSpecular(ks, l, n, nl, v, nShininess, ip)
+                    );
+                }
+            }
+        }
+        return result.getColor();
     }
 
+    private boolean sign(double val) {
+        return (val > 0d);
+    }
 
+    private Color calcSpecular(double ks, Vector l, Vector n, double nl, Vector v, int nShininess, Color ip) {
+        Vector r = l.add(n.scale(-2 * nl)); // nl must not be zero!
+        double minusVR = -alignZero(r.dotProduct(v));
+        if (minusVR <= 0) return Color.BLACK; // view from direction opposite to r vector
+        return ip.scale(ks * Math.pow(minusVR, nShininess));
+    }
+
+    private Color calcDiffusive(double kd, double nl, Color ip) {
+        if (nl < 0) nl = -nl;
+        return ip.scale(nl * kd);
+    }
 }

@@ -40,7 +40,7 @@ class PlaneTest {
         List<Intersectable.GeoPoint> l=p.findIntsersections(r);
         List<Point3D> expectList=new ArrayList<Point3D>();
         expectList.add(new Point3D(0.0,6.0,5.0));
-        assertEquals(expectList,l);
+        assertEquals(expectList,List.of(l.get(0).getPoint()));
 
         //part 2- the ray does not intersect the plane:
         r=new Ray(new Point3D(4.0,2.0,1.0),new Vector(5.0,-2.0,2.0));
