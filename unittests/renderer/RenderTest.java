@@ -38,7 +38,7 @@ public class RenderTest {
         Render render = new Render(scene,imageWriter);
 
         render.renderImage();
-        render.printGrid(50, new Color(java.awt.Color.YELLOW));
+        render.printGrid(50, java.awt.Color.YELLOW);
         render.writeToImage();
     }
 
@@ -66,7 +66,7 @@ public class RenderTest {
         Render render = new Render(scene, imageWriter);
 
         render.renderImage();
-        render.printGrid(50, new Color(java.awt.Color.WHITE));
+        render.printGrid(50, java.awt.Color.WHITE);
         render.writeToImage();
     }
 }

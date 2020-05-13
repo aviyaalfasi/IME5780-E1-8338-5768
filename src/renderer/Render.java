@@ -1,36 +1,36 @@
+
 package renderer;
 
-import elements.Camera;
-import elements.LightSource;
-import geometries.Intersectable.GeoPoint;
-import geometries.Intersectable;
-import primitives.*;
-import scene.Scene;
+        import elements.*;
+        import geometries.*;
+        import primitives.*;
+        import geometries.Intersectable.GeoPoint;
+        import scene.Scene;
 
-import java.util.List;
+        import java.util.List;
 
-import static primitives.Util.alignZero;
-
-/**
- * @author aviya and sima
- */
+        import static primitives.Util.alignZero;
 
 public class Render {
     private Scene _scene;
     private ImageWriter _imageWriter;
 
-    /**
-     * constructor for Render that recieves two arguments
-     * @param _scene scene
-     * @param _imageWriter image writer
-     */
-    public Render(Scene _scene, ImageWriter _imageWriter) {
+    public Render(Scene _scene) {
         this._scene = _scene;
-        this._imageWriter = _imageWriter;
+    }
+
+    public Render(Scene scene, ImageWriter imageWriter) {
+        this._imageWriter = imageWriter;
+        this._scene = scene;
+    }
+
+    public Scene get_scene() {
+        return _scene;
     }
 
     /**
-     * renders an image
+     * Filling the buffer according to the geometries that are in the scene.
+     * This function does not creating the picture file, but create the buffer pf pixels
      */
     public void renderImage() {
         java.awt.Color background = _scene.getBackground().getColor();
@@ -38,121 +38,144 @@ public class Render {
         Intersectable geometries = _scene.getGeometries();
         double distance = _scene.getDistance();
 
-        // Number of pixels in the row of View Plane
+        //width and height are the number of pixels in the rows
+        //and columns of the view plane
         int width = (int) _imageWriter.getWidth();
-        // Number of pixels in the column of View Plane
         int height = (int) _imageWriter.getHeight();
 
-        // Width of the image
-        int Nx = _imageWriter.getNx();
-        // Height the image
-        int Ny = _imageWriter.getNy();
-
-        Ray ray;
-        for (int row = 0; row < Ny; row++) {
-            for (int column = 0; column < Nx; column++) {
-                ray = camera.constructRayThroughPixel(Nx, Ny, row, column, distance, width, height);
+        //Nx and Ny are the width and height of the image.
+        int Nx = _imageWriter.getNx(); //columns
+        int Ny = _imageWriter.getNy(); //rows
+        //pixels grid
+        for (int row = 0; row < Ny; ++row) {
+            for (int column = 0; column < Nx; ++column) {
+                Ray ray = camera.constructRayThroughPixel(Nx, Ny, column, row, distance, width, height);
                 List<GeoPoint> intersectionPoints = geometries.findIntsersections(ray);
                 if (intersectionPoints == null) {
                     _imageWriter.writePixel(column, row, background);
                 } else {
                     GeoPoint closestPoint = getClosestPoint(intersectionPoints);
-                    _imageWriter.writePixel(column - 1, row - 1, calcColor(closestPoint));
+                    java.awt.Color pixelColor = calcColor(closestPoint).getColor();
+                    _imageWriter.writePixel(column, row, pixelColor);
                 }
             }
         }
     }
 
     /**
-     * receives list of intersection points and returns the closest one to the camera
-     * @param intersectionPoints intersection points with ray
-     * @return closest point to camera
+     * Finding the closest point to the P0 of the camera.
+     *
+     * @param intersectionPoints list of points, the function should find from
+     *                           this list the closet point to P0 of the camera in the scene.
+     * @return the closest point to the camera
      */
+
     private GeoPoint getClosestPoint(List<GeoPoint> intersectionPoints) {
         GeoPoint result = null;
-        double min = Double.MAX_VALUE;
+        double mindist = Double.MAX_VALUE;
+
         Point3D p0 = this._scene.getCamera().get_p0();
-        for (GeoPoint pt : intersectionPoints) {
-            double distance = p0.distance(pt.point);
-            if (distance < min) {
-                min = distance;
-                result = pt;
+
+        for (GeoPoint geo : intersectionPoints) {
+            Point3D pt = geo.getPoint();
+            double distance = p0.distance(pt);
+            if (distance < mindist) {
+                mindist = distance;
+                result = geo;
             }
         }
         return result;
     }
 
     /**
-     * prints a grid on the image
-     * @param interval the interval between the lines
-     * @param color color of grid
+     * Printing the grid with a fixed interval between lines
+     *
+     * @param interval The interval between the lines.
      */
-    public void printGrid(int interval, Color color) {
-        double rows = this._imageWriter.getNx();
-        double columns = _imageWriter.getNy();
-
-        for (int col = 0; col < columns; col++)
-            for (int row = 0; row < rows; row++)
-                if (col % interval == 0 || row % interval == 0)
-                    _imageWriter.writePixel(row, col, color.getColor());
-
+    public void printGrid(int interval, java.awt.Color colorsep) {
+        double rows = this._imageWriter.getNy();
+        double collumns = _imageWriter.getNx();
+        //Writing the lines.
+        for (int row = 0; row < rows; ++row) {
+            for (int collumn = 0; collumn < collumns; ++collumn) {
+                if (collumn % interval == 0 || row % interval == 0) {
+                    _imageWriter.writePixel(collumn, row, colorsep);
+                }
+            }
+        }
     }
 
-    /**
-     * calls the function writeToImage of the image writer in this renderer
-     */
     public void writeToImage() {
         _imageWriter.writeToImage();
     }
 
     /**
-     * calculates the color of each point in the view plane
-     * @param point the point where color is calculated
-     * @return color in received point
+     * Calculate the color intensity in a point
+     *
+     *
+     * @return the color intensity
      */
-    private java.awt.Color calcColor(GeoPoint point) {
-        Color result = new Color(_scene.getAmbientLight().getIntensity());
-        result = result.add(point.getGeometry().getEmissionLight());
-
-        Vector v = point.getPoint().subtract(_scene.getCamera().get_p0()).normalize();
-        Vector n = point.getGeometry().getNormal(point.getPoint());
-
-        Material material = point.getGeometry().getMaterial();
-        int nShininess = material.getnShininess();
-        double kd = material.getKd();
-        double ks = material.getKs();
-        if (_scene.getLightSources() != null) {
-            for (LightSource lightSource : _scene.getLightSources()) {
-
-                Vector l = lightSource.getL(point.getPoint());
-                double nl = alignZero(n.dotProduct(l));
-                double nv = alignZero(n.dotProduct(v));
-
-                if (sign(nl) == sign(nv)) {
-                    Color ip = lightSource.getIntensity(point.getPoint());
-                    result = result.add(
-                            calcDiffusive(kd, nl, ip),
-                            calcSpecular(ks, l, n, nl, v, nShininess, ip)
-                    );
-                }
+    private Color calcColor(GeoPoint point) {
+        Color ambientLight=_scene.getAmbientLight().getIntensity();
+        Color emmissionLLight=point.geometry.getEmissionLight();
+        Color diffuseLight=new Color(0,0,0);
+        Color specularLight=new Color(0,0,0);
+        Vector n=point.geometry.getNormal(point.point).normalize();
+        Vector v=(point.point).subtract(_scene.getCamera().get_p0()).normalize();
+        for(LightSource l:_scene.getLightSources())
+        {
+            if(Math.signum(n.dotProduct(l.getL(point.point)))==Math.signum(n.dotProduct(v))) {
+                diffuseLight = diffuseLight.add(calcDiffusive(point, l));
+                specularLight = specularLight.add(calcSpecular(point, l));
             }
         }
-        return result.getColor();
+        return new Color(ambientLight.add(emmissionLLight,diffuseLight,specularLight));
     }
+
 
     private boolean sign(double val) {
         return (val > 0d);
     }
 
-    private Color calcSpecular(double ks, Vector l, Vector n, double nl, Vector v, int nShininess, Color ip) {
-        Vector r = l.add(n.scale(-2 * nl)); // nl must not be zero!
-        double minusVR = -alignZero(r.dotProduct(v));
-        if (minusVR <= 0) return Color.BLACK; // view from direction opposite to r vector
-        return ip.scale(ks * Math.pow(minusVR, nShininess));
+    /**
+     * Calculate Specular component of light reflection.
+     *
+     *
+     * <p>
+     * Finally, the Phong model has a provision for a highlight, or specular, component, which reflects light in a
+     * shiny way. This is defined by [rs,gs,bs](-V.R)^p, where R is the mirror reflection direction vector we discussed
+     * in class (and also used for ray tracing), and where p is a specular power. The higher the value of p, the shinier
+     * the surface.
+     */
+    private Color calcSpecular(GeoPoint point,LightSource l)
+    {
+        double ks=point.geometry.getMaterial().getKs();
+        Vector v=(point.point).subtract(_scene.getCamera().get_p0()).normalize();
+        Vector d=l.getL(point.point);
+        Vector n=point.geometry.getNormal(point.point).normalize();
+        Vector r=d.subtract(n.scale(2*d.dotProduct(n)));
+        double dotPro=v.scale(-1).dotProduct(r);
+        return l.getIntensity(point.point).scale((Math.pow(Math.max(dotPro,0),point.geometry.getMaterial().getnShininess())*ks));
     }
 
-    private Color calcDiffusive(double kd, double nl, Color ip) {
-        if (nl < 0) nl = -nl;
-        return ip.scale(nl * kd);
+    /**
+     * Calculate Diffusive component of light reflection.
+     *
+     * intensity at the point
+     * @return diffusive component of light reflection
+     * @author Dan Zilberstein
+     * <p>
+     * The diffuse component is that dot product n•L that we discussed in class. It approximates light, originally
+     * from light source L, reflecting from a surface which is diffuse, or non-glossy. One example of a non-glossy
+     * surface is paper. In general, you'll also want this to have a non-gray color value, so this term would in general
+     * be a color defined as: [rd,gd,bd](n•L)
+     */
+    private Color calcDiffusive(GeoPoint point,LightSource l)
+    {
+        Color inten = l.getIntensity(point.point);
+        double kd=point.geometry.getMaterial().getKd();
+        double dotPro=(point.geometry.getNormal(point.point)).normalize().dotProduct(l.getL(point.point));
+        return inten.scale(Math.abs(kd*dotPro));
     }
+
 }
