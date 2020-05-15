@@ -8,7 +8,7 @@ import java.util.List;
 import static primitives.Util.*;
 
 /**
- * Class Tube is the basic class representing a Tube. This class extends Radial Geometries class, which implements the Geometry interface.
+ * Class Tube is the basic class representing a Tube. This class extends Radial Geometries class.
  * @author Aviya and Sima
  */
 public class Tube extends RadialGeometry {
@@ -28,12 +28,25 @@ public class Tube extends RadialGeometry {
         this._axisRay = new Ray(_axisRay);
     }
 
+    /**
+     * Tube constructor
+     * @param _radius tube radius value
+     * @param _axisRay tube axis ray value
+     * @param _emmission emmission light of tube
+     */
     public Tube(double _radius, Ray _axisRay, Color _emmission){
         super(_radius, _emmission);
         this._axisRay = new Ray(_axisRay);
 
     }
 
+    /**
+     * Tube constructor
+     * @param _radius tube radius value
+     * @param _axisRay tube axis ray value
+     * @param _emmission emmission light of tube
+     * @param _material material of tube
+     */
     public Tube(double _radius, Ray _axisRay, Color _emmission, Material _material){
         this(_radius,_axisRay, _emmission);
         this._material = _material;

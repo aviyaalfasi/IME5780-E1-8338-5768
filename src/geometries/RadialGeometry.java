@@ -4,7 +4,7 @@ import primitives.Color;
 
 /**
  * Class Radial Geometry is an abstract class representing a radial geometry. Any geometry that includes a radius will extend this class.
- * The class implements the Geometry interface, so that any class that will extend it will have to implement the interface as well.
+ * The class extends the Geometry class.
  * @author Aviya and Sima
  */
 public abstract class RadialGeometry extends Geometry {

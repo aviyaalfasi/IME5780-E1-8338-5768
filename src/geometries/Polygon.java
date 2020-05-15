@@ -8,7 +8,7 @@ import static primitives.Util.*;
 /**
  * Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
  * system
- *
+ * Extends Geometry class
  * @author Dan
  */
 public class Polygon extends Geometry {
@@ -81,6 +81,11 @@ public class Polygon extends Geometry {
         }
     }
 
+    /**
+     * constructor
+     * @param _emmission emmission light of polygon
+     * @param vertices vertices that create the polygon
+     */
     public Polygon(Color _emmission, Point3D... vertices) {
         super(_emmission);
         if (vertices.length < 3)
@@ -126,11 +131,20 @@ public class Polygon extends Geometry {
         this._material = _material;
     }
 
+    /**
+     * @param point
+     * @return normal to recieved point in the polygon
+     */
     @Override
     public Vector getNormal(Point3D point) {
         return _plane.getNormal(point);
     }
 
+    /**
+     * find all intersections of recieved ray with the polygon
+     * @param ray
+     * @return list of GeopPoints- intersection points with the polygon
+     */
     @Override
     public List<GeoPoint> findIntsersections(Ray ray) {
         List<GeoPoint> intersections = _plane.findIntsersections(ray);

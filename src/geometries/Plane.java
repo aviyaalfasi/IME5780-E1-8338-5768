@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class Plane is the basic class representing a plane. It implements the Geometry interface.
+ * Class Plane is the basic class representing a plane. It extends the Geometry class.
  * @author Aviya and Sima
  */
 public final class Plane extends Geometry {
@@ -32,6 +32,13 @@ public final class Plane extends Geometry {
         _point = new Point3D(_p1);
     }
 
+    /**
+     * construct plane from 3 points
+     * @param _p1 point on the plane
+     * @param _p2 point on the plane
+     * @param _p3 point on the plane
+     * @param _emmission emission light of plane
+     */
     public Plane(Point3D _p1, Point3D _p2, Point3D _p3, Color _emmission)
     {
         super(_emmission);
@@ -41,6 +48,14 @@ public final class Plane extends Geometry {
         _point = new Point3D(_p1);
     }
 
+    /**
+     * construct plane from 3 points
+     * @param _p1 point on the plane
+     * @param _p2 point on the plane
+     * @param _p3 point on the plane
+     * @param _emmission emission light of plane
+     * @param _material material of plane
+     */
     public Plane(Point3D _p1, Point3D _p2, Point3D _p3, Color _emmission, Material _material)
     {
         this(_p1, _p2, _p3, _emmission);
@@ -58,6 +73,12 @@ public final class Plane extends Geometry {
         this._normal = new Vector(_normal);
     }
 
+    /**
+     * construct ray with normal and point on plane
+     * @param _normal normal value
+     * @param _point point value
+     * @param _emmission emmission light of plane
+     */
     public Plane(Vector _normal, Point3D _point, Color _emmission)
     {
         super(_emmission);
@@ -65,6 +86,13 @@ public final class Plane extends Geometry {
         this._normal = new Vector(_normal);
     }
 
+    /**
+     * construct ray with normal and point on plane
+     * @param _normal normal value
+     * @param _point point value
+     * @param _emmission emmission light of plane
+     * @param _material material of plane
+     */
     public Plane(Vector _normal, Point3D _point, Color _emmission, Material _material)
     {
         this(_normal, _point, _emmission);
@@ -93,6 +121,11 @@ public final class Plane extends Geometry {
         return "Plane{ normal= "+_normal+" point= "+_point+" }";
     }
 
+    /**
+     * find all intersections of recieved ray with the plane
+     * @param ray
+     * @return list of GeopPoints- intersection points with the plane
+     */
     @Override
     public List<GeoPoint> findIntsersections(Ray ray) {
         Vector p0Q;

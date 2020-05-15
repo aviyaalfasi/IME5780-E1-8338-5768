@@ -40,6 +40,11 @@ public final class Triangle extends Polygon {
         return "Triangle{ super: " + super.toString() + " }";
     }
 
+    /**
+     * find all intersections of received ray with the triangle
+     * @param ray
+     * @return list of GeopPoints- intersection points with the triangle
+     */
     @Override
     public List<GeoPoint> findIntsersections(Ray ray) {
         List<GeoPoint> intersections = _plane.findIntsersections(ray);

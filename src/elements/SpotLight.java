@@ -16,7 +16,7 @@ public class SpotLight extends PointLight {
 
     @Override
     public Vector getL(Point3D p) {
-        return _direction;
+        return _direction.normalize();
     }
 
     public Color getIntensity(Point3D p)
@@ -28,3 +28,4 @@ public class SpotLight extends PointLight {
     }
 
 }
+

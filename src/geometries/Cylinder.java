@@ -25,16 +25,34 @@ public final class Cylinder extends Tube{
         this._height=_height;
     }
 
+    /**
+     * Cylinder constructor
+     * @param _radius radius value
+     * @param _axisRay axis ray value
+     * @param _height height value
+     * @param _emmission emission light of cylinder
+     */
     public Cylinder(double _radius, Ray _axisRay, double _height, Color _emmission){
         super(_radius,_axisRay, _emmission);
         this._height=_height;
     }
 
+    /**
+     * Cylinder constructor
+     * @param _radius radius value
+     * @param _axisRay axis ray value
+     * @param _height height value
+     * @param _emmission emission light of cylinder
+     * @param _material material of cylinder
+     */
     public Cylinder(double _radius, Ray _axisRay, double _height, Color _emmission, Material _material){
         this(_radius, _axisRay, _height, _emmission);
         this._material = _material;
     }
 
+    /**
+     * @return height value
+     */
     public double get_height() {
         return _height;
     }

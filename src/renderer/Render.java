@@ -1,15 +1,15 @@
 
 package renderer;
 
-        import elements.*;
-        import geometries.*;
-        import primitives.*;
-        import geometries.Intersectable.GeoPoint;
-        import scene.Scene;
+import elements.*;
+import geometries.*;
+import primitives.*;
+import geometries.Intersectable.GeoPoint;
+import scene.Scene;
 
-        import java.util.List;
+import java.util.List;
 
-        import static primitives.Util.alignZero;
+import static primitives.Util.alignZero;
 
 public class Render {
     private Scene _scene;
@@ -112,70 +112,93 @@ public class Render {
     /**
      * Calculate the color intensity in a point
      *
-     *
      * @return the color intensity
      */
-    private Color calcColor(GeoPoint point) {
-        Color ambientLight=_scene.getAmbientLight().getIntensity();
-        Color emmissionLLight=point.geometry.getEmissionLight();
-        Color diffuseLight=new Color(0,0,0);
-        Color specularLight=new Color(0,0,0);
-        Vector n=point.geometry.getNormal(point.point).normalize();
-        Vector v=(point.point).subtract(_scene.getCamera().get_p0()).normalize();
-        for(LightSource l:_scene.getLightSources())
-        {
-            if(Math.signum(n.dotProduct(l.getL(point.point)))==Math.signum(n.dotProduct(v))) {
-                diffuseLight = diffuseLight.add(calcDiffusive(point, l));
-                specularLight = specularLight.add(calcSpecular(point, l));
+    private Color calcColor(GeoPoint coloredPoint) {
+        List<LightSource> lightSources = _scene.getLightSources();
+        Color result = _scene.getAmbientLight().getIntensity();
+        result = result.add(coloredPoint.getGeometry().getEmissionLight());
+
+        Vector v = coloredPoint.getPoint().subtract(_scene.getCamera().get_p0()).normalize();
+        Vector n = coloredPoint.getGeometry().getNormal(coloredPoint.getPoint());
+
+        Material material = coloredPoint.getGeometry().getMaterial();
+        int nShininess = material.getnShininess();
+        double kd = material.getKd();
+        double ks = material.getKs();
+
+        if (lightSources != null) {
+            for (LightSource lightSource : lightSources) {
+                Vector l = lightSource.getL(coloredPoint.getPoint());
+                double nl = alignZero(n.dotProduct(l));
+                double nv = alignZero(n.dotProduct(v));
+
+                if (sign(nl) == sign(nv)) {
+                    Color ip = lightSource.getIntensity(coloredPoint.getPoint());
+                    result = result.add(
+                            calcDiffusive(kd, nl, ip),
+                            calcSpecular(ks, l, n, nl, v, nShininess, ip));
+                }
             }
         }
-        return new Color(ambientLight.add(emmissionLLight,diffuseLight,specularLight));
-    }
 
-
-    private boolean sign(double val) {
-        return (val > 0d);
+        return result;
     }
 
     /**
      * Calculate Specular component of light reflection.
      *
-     *
+     * @param ks         specular component coef
+     * @param l          direction from light to point
+     * @param n          normal to surface at the point
+     * @param nl         dot-product n*l
+     * @param v          direction from point of view to point
+     * @param nShininess shininess level
+     * @param ip         light intensity at the point
+     * @return specular component light effect at the point
+     * @author Dan Zilberstein
      * <p>
      * Finally, the Phong model has a provision for a highlight, or specular, component, which reflects light in a
      * shiny way. This is defined by [rs,gs,bs](-V.R)^p, where R is the mirror reflection direction vector we discussed
      * in class (and also used for ray tracing), and where p is a specular power. The higher the value of p, the shinier
      * the surface.
      */
-    private Color calcSpecular(GeoPoint point,LightSource l)
-    {
-        double ks=point.geometry.getMaterial().getKs();
-        Vector v=(point.point).subtract(_scene.getCamera().get_p0()).normalize();
-        Vector d=l.getL(point.point);
-        Vector n=point.geometry.getNormal(point.point).normalize();
-        Vector r=d.subtract(n.scale(2*d.dotProduct(n)));
-        double dotPro=v.scale(-1).dotProduct(r);
-        return l.getIntensity(point.point).scale((Math.pow(Math.max(dotPro,0),point.geometry.getMaterial().getnShininess())*ks));
+    private Color calcSpecular(double ks, Vector l, Vector n, double nl, Vector v, int nShininess, Color ip) {
+        double p = nShininess;
+
+        Vector R = l.add(n.scale(-2 * nl)); // nl must not be zero!
+        double minusVR = -alignZero(R.dotProduct(v));
+        if (minusVR <= 0) {
+            return Color.BLACK; // view from direction opposite to r vector
+        }
+        // [rs,gs,bs](-V.R)^p
+        return ip.scale(ks * Math.pow(minusVR, p));
     }
 
     /**
      * Calculate Diffusive component of light reflection.
      *
-     * intensity at the point
+     * @param kd diffusive component coef
+     * @param nl dot-product n*l
+     * @param ip light intensity at the point
      * @return diffusive component of light reflection
      * @author Dan Zilberstein
      * <p>
      * The diffuse component is that dot product n•L that we discussed in class. It approximates light, originally
      * from light source L, reflecting from a surface which is diffuse, or non-glossy. One example of a non-glossy
-     * surface is paper. In general, you'll also want this to have a non-gray color value, so this term would in general
-     * be a color defined as: [rd,gd,bd](n•L)
+     * surface is paper. In general, you'll also want this to have a non-gray color value,
+     * so this term would in general be a color defined as: [rd,gd,bd](n•L)
      */
-    private Color calcDiffusive(GeoPoint point,LightSource l)
-    {
-        Color inten = l.getIntensity(point.point);
-        double kd=point.geometry.getMaterial().getKd();
-        double dotPro=(point.geometry.getNormal(point.point)).normalize().dotProduct(l.getL(point.point));
-        return inten.scale(Math.abs(kd*dotPro));
+    private Color calcDiffusive(double kd, double nl, Color ip) {
+        if (nl < 0) {
+            nl = -nl;
+        }
+
+        return ip.scale(nl * kd);
+    }
+
+    private boolean sign(double val) {
+        return (val > 0d);
     }
 
 }

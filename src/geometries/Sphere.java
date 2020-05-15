@@ -8,6 +8,11 @@ import java.util.Objects;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
+/**
+ * Class Sphere is the basic class representing a sphere. It extends the RadialGeometry class.
+ * @author Aviya and Sima
+ */
+
 public class Sphere extends RadialGeometry {
     /**
      * The center of the sphere
@@ -16,10 +21,8 @@ public class Sphere extends RadialGeometry {
 
     /**
      * constructor for a new sphere object.
-     *
      * @param radius the radius of the sphere
      * @param center the center point of the sphere
-     *
      * @throws Exception in case of negative or zero radius from RadialGeometry constructor
      */
     public Sphere(double radius, Point3D center) {
@@ -27,11 +30,24 @@ public class Sphere extends RadialGeometry {
         _center = new Point3D(center);
     }
 
+    /**
+     * constructor for a new sphere object.
+     * @param radius the radius of the sphere
+     * @param center the center point of the sphere
+     * @param _emmission the emmission light of the sphere
+     */
     public Sphere(double radius, Point3D center, Color _emmission) {
         super(radius, _emmission);
         _center = new Point3D(center);
     }
 
+    /**
+     * constructor for a new sphere object.
+     * @param radius the radius of the sphere
+     * @param center the center point of the sphere
+     * @param _emmission the emmission light of the sphere
+     * @param _material the material of the sphere
+     */
     public Sphere(double radius, Point3D center, Color _emmission, Material _material) {
         this(radius, center, _emmission);
         this._material = _material;
@@ -45,7 +61,6 @@ public class Sphere extends RadialGeometry {
 
     /**
      * getter for the center property
-     *
      * @return the center of the sphere
      */
     public Point3D getCenter() {
@@ -62,6 +77,7 @@ public class Sphere extends RadialGeometry {
         return normal.normalize();
     }
 
+
     public Point3D get_center() {
         return _center;
     }
@@ -69,6 +85,11 @@ public class Sphere extends RadialGeometry {
 
     @Override
 
+    /**
+     * find all intersections of received ray with the sphere
+     * @param ray
+     * @return list of GeopPoints- intersection points with the sphere
+     */
     public List<GeoPoint> findIntsersections(Ray ray) {
         Point3D p0 = ray.getPoint();
         Vector v = ray.getDirection();
