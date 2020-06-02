@@ -2,7 +2,7 @@ package elements;
 
 import primitives.Color;
 
-abstract class Light {
+public abstract class Light {
     protected Color _intensity;
 
     public Light(Color _intensity) {

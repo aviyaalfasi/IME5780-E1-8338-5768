@@ -5,43 +5,50 @@ import primitives.Point3D;
 import primitives.Vector;
 
 public class PointLight extends Light implements LightSource{
-    protected Point3D _position;
-    protected double _kC;
-    protected double _kL;
-    protected double kQ;
+    Point3D _position;
+    double _kC; // Constant attenuation
+    double _kL; // Linear attenuation
+    double _kQ; // Quadratic attenuation
 
-    public PointLight(Color _intensity, Point3D _position, double _kC, double _kL, double _kQ) {
-        super(_intensity);
-        this._position = new Point3D(_position);
-        this._kC = _kC;
-        this._kL = _kL;
-        this.kQ = _kQ;
+    public PointLight(Color colorIntensity, Point3D position, double kC, double kL, double kQ) {
+        super(colorIntensity);
+        this._position = new Point3D(position);
+        this._kC = kC;
+        this._kL = kL;
+        this._kQ = kQ;
     }
 
+    // by default, the constant attenuation value is 1 and the other two values are 0
+    public PointLight(Color colorIntensity, Point3D position) {
+        this(colorIntensity, position, 1d, 0d, 0d);
+    }
+
+    //dummy overriding Light getIntensity()
+    @Override
+    public Color getIntensity() {
+        return super.getIntensity();
+    }
+
+    //overriding LightSource getIntensity(Point3D)
     @Override
     public Color getIntensity(Point3D p) {
         double dsquared = p.distanceSquared(_position);
         double d = p.distance(_position);
 
-        return (_intensity.reduce(_kC + _kL * d + kQ * dsquared));
+        return (_intensity.reduce(_kC + _kL * d + _kQ * dsquared));
     }
 
+    // Light vector
     @Override
     public Vector getL(Point3D p) {
         if (p.equals(_position)) {
             return null;
-        } else {
-            return p.subtract(_position).normalize();
         }
+        return p.subtract(_position).normalize();
     }
 
-    /**
-     * @param point
-     * @return distance of point from light source
-     */
     @Override
     public double getDistance(Point3D point) {
-        return  _position.distance(point);
+        return _position.distance(point);
     }
-
 }
