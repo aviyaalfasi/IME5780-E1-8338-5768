@@ -7,7 +7,7 @@ import static primitives.Util.isZero;
  * @author Aviya and Sima
  */
 public class Ray {
-
+    private static final double DELTA = 0.1;
     /**
      * The point from which the ray starts.
      */
@@ -43,6 +43,16 @@ public class Ray {
     public Ray(Ray other) {
         this._point = new Point3D(other._point);
         this._direction = other._direction.normalized();
+    }
+
+    public Ray(Point3D point, Vector direction, Vector normal) {
+        //point + normal.scale(±DELTA)
+        _direction = new Vector(direction).normalized();
+
+        double nv = normal.dotProduct(direction);
+
+        Vector normalDelta = normal.scale((nv > 0 ? DELTA : -DELTA));
+        _point = point.add(normalDelta);
     }
 
     /**
