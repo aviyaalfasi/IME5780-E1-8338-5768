@@ -1,9 +1,7 @@
 package renderer;
+import elements.*;
 import geometries.Triangle;
 import org.junit.jupiter.api.Test;
-import elements.AmbientLight;
-import elements.Camera;
-import elements.SpotLight;
 import geometries.Sphere;
 import primitives.Color;
 import primitives.Material;
@@ -95,5 +93,105 @@ class ReflectionRefractionTests {
 
         render.renderImage();
         render.writeToImage();
+    }
+
+    @Test
+    public void our_first_image(){
+        Scene scene = new Scene("our_masterpiece");
+        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0,0, 1), new Vector(0, -1, 0)));
+        scene.setDistance(1000);
+        scene.setBackground(Color.BLACK);
+        scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
+
+        scene.addGeometries(
+                //וורוד
+                new Triangle(new Color(128,49,106),new Material(1,1,50000,0.4,0),new Point3D(  0,  0, -200),
+                new Point3D( 109.12, -63, -200),
+                new Point3D(  109.12, 63, -200)),
+
+                //  אמצע ימין
+                new Triangle(new Color(52,38,97),new Material(1,1,50000,0.4,0),new Point3D(  0,  0, -200),
+                        new Point3D( 0, 126, -200),
+                        new Point3D(  109.12, 63, -200)),
+
+                // אמצע שמאל
+                new Triangle(new Color(26,98,157),new Material(1,1,50000,0.4,0),new Point3D(  0,  0, -200),
+                        new Point3D( 0, 126, -200),
+                        new Point3D(  -109.12, 63, -200)),
+
+                //ימין
+                new Triangle(new Color(27,155,192),new Material(1,1,50000,0.4,0),new Point3D(  0,  0, -200),
+                        new Point3D( -109.12, -63, -200),
+                        new Point3D(  -109.12, 63, -200)),
+
+                new Sphere(192, new Point3D(0,0,-200),  Color.BLACK, new Material(0.8, 0.8, 30, 0.8, 0)),
+
+                new Sphere(148, new Point3D(0,0,-200),  Color.BLACK, new Material(0.8, 0.8, 30, 0.8, 0)),
+
+                new Triangle(Color.BLACK, new Material(0.8,1,10000,0,1),
+                        new Point3D(500,200,-100), new Point3D(-500,200,-100), new Point3D(1800,200,-700)),
+
+                new Triangle(Color.BLACK,new Material(0.8,1,10000,0,1),
+                        new Point3D(-500,200,-100), new Point3D(1800,200,-700), new Point3D(-1800,200,-700))
+        );
+
+        scene.addLights(new DirectionalLight(new Color(10,10,10),new Vector(1,-1,0)),
+        new SpotLight(new Color(600, 400, 1020), new Point3D(-300, -300, -100),new Vector(2, 2, -3),1, 0.00001, 0.000005));
+
+        ImageWriter imageWriter = new ImageWriter("LevLogo", 1000, 1000, 1000, 1000);
+
+        Render render = new Render(scene, imageWriter);
+
+        render.renderImage();
+        imageWriter.writeToImage();
+    }
+
+
+
+
+    @Test
+    public void rst_image(){
+        Scene scene = new Scene("sterpiece");
+        scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0,0, 1), new Vector(0, -1, 0)));
+        scene.setDistance(1000);
+        scene.setBackground(Color.BLACK);
+        scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
+
+        scene.addGeometries(
+                /**
+                new Triangle(new Color(27,155,192),new Material(1,1,0,0,0),new Point3D(  0,  0, -200),
+                        new Point3D( -109.12, 63, -200),
+                        new Point3D(  -109.12, -63, -200)),
+
+                new Triangle(new Color(26,98,157),new Material(1,1,0,0,0),new Point3D(  0,  0, -200),
+                        new Point3D( 0, -126, -200),
+                        new Point3D(  -109.12, -63, -200)),
+*/
+                new Triangle(new Color(52,38,97),new Material(1,1,0,0,0),new Point3D(  0,  0, -200),
+                        new Point3D( 0, -126, -200),
+                        new Point3D(  109.12, -63, -200)),
+/**
+                new Triangle(new Color(128,49,106),new Material(1,1,0,0,0),new Point3D(  0,  0, -200),
+                        new Point3D( 109.12, 63, -200),
+                        new Point3D(  109.12, -63, -200)),*/
+
+                new Sphere(150, new Point3D(0,0,-200), Color.BLACK, new Material(0.2, 0.2, 30, 0.6, 0)),
+
+                new Triangle(Color.BLACK, new Material(1,1,1,0,1),
+                        new Point3D(-500,-200,-100), new Point3D(500,-200,-100), new Point3D(-1800,-200,-700)),
+
+                new Triangle(Color.BLACK,new Material(1,1,1,0,1),
+                        new Point3D(500,-200,-100), new Point3D(-1800,-200,-700), new Point3D(1800,-200,-700))
+        );
+
+        scene.addLights(new PointLight(new Color(130,184,234), new Point3D(0, 0, 1500),
+                0, 0.00001, 0.000005));
+
+        ImageWriter imageWriter = new ImageWriter("Leogo", 500, 500, 500, 500);
+
+        Render render = new Render(scene, imageWriter);
+
+        render.renderImage();
+        imageWriter.writeToImage();
     }
 }
