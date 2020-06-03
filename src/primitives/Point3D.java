@@ -21,9 +21,9 @@ public class Point3D {
 
     /**
      * Point3D constructor that receives the values for the coordinates as coordinate
-     * @param x  axis coordinate value
-     * @param y  axis coordinate value
-     * @param z  axis coordinate value
+     * @param _x  axis coordinate value
+     * @param _y  axis coordinate value
+     * @param _z  axis coordinate value
      */
     public Point3D(Coordinate _x, Coordinate _y, Coordinate _z) {
         this._x = _x;
@@ -33,7 +33,7 @@ public class Point3D {
 
     /**
      * Point3D copy constructor- receives another Point3D
-     * @param _other the point that is copied
+     * @param p the point that is copied
      */
     public Point3D(Point3D p) {
         this._x = new Coordinate(p._x);
@@ -76,7 +76,7 @@ public class Point3D {
 
     /**
      * Calculates the distance between two points squares
-     * @param vertex the second point
+     * @param other the second point
      * @return the distance between the two points squares
      */
     public double distanceSquared(Point3D other)
@@ -88,7 +88,7 @@ public class Point3D {
 
     /**
      * Calculates the distance between two points
-     * @param vertex the second point
+     * @param other the second point
      * @return the distance between the two points squares
      */
     public double distance (Point3D other){
@@ -97,7 +97,7 @@ public class Point3D {
 
     /**
      * add vector to point
-     * @param vector the vector to add
+     * @param v the vector to add
      * @return A new point created in the distance and in the direction of Hector from the original point
      */
     public Point3D add(Vector v) {

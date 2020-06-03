@@ -122,10 +122,17 @@ public class Scene {
         _geometries.add(geometries);
     }
 
+    /**
+     * @return light sources in scene
+     */
     public List<LightSource> getLightSources() {
         return _lights;
     }
 
+    /**
+     * add a light to list of light sources in scene
+     * @param lights light or lights to add
+     */
     public void addLights(LightSource... lights) {
         for (LightSource light:lights) {
             _lights.add(light);

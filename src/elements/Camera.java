@@ -7,28 +7,50 @@ import primitives.Vector;
 
 import static primitives.Util.isZero;
 
+/**
+ * @author aviya and sima
+ */
+
 public class Camera {
     Point3D _p0;
     Vector _vUp;
     Vector _vRight;
     Vector _vTo;
 
+    /**
+     * @return the point where camera is located
+     */
     public Point3D get_p0() {
         return _p0;
     }
 
+    /**
+     * @return vector vUp
+     */
     public Vector get_vUp() {
         return _vUp;
     }
 
+    /**
+     * @return vector vRight
+     */
     public Vector get_vRight() {
         return _vRight;
     }
 
+    /**
+     * @return vector vTowards
+     */
     public Vector get_vTo() {
         return _vTo;
     }
 
+    /**
+     * constructor for camera that receives the point where camera is locted, vUp, and vTowards, and creates vRight by cross product of both vectors
+     * @param _p0 camera's location
+     * @param _vTo
+     * @param _vUp
+     */
     public Camera(Point3D _p0, Vector _vTo, Vector _vUp) {
 
         //if the the vectors are not orthogonal, throw exception.
@@ -40,6 +62,17 @@ public class Camera {
         }
     }
 
+    /**
+     * create a ray through a pixel on the view plane
+     * @param nX number of pixels
+     * @param nY number of pixels
+     * @param j j coordinate of the pixel through which we will create ray
+     * @param i i coordinate of the pixel through which we will create ray
+     * @param screenDistance screen distance from camera
+     * @param screenWidth screen width
+     * @param screenHeight screen height
+     * @return ray that goes through pixel (j,i)
+     */
     public Ray constructRayThroughPixel(int nX, int nY, int j, int i, double screenDistance,
                                         double screenWidth, double screenHeight)
     {

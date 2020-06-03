@@ -136,7 +136,7 @@ class ReflectionRefractionTests {
         );
 
         scene.addLights(new DirectionalLight(new Color(10, 10, 10), new Vector(1, -1, 0)),
-                new SpotLight(new Color(600, 400, 1020), new Point3D(-300, -300, -100), new Vector(2, 2, -3), 1, 0.00001, 0.000005));
+                new SpotLight(new Color(400, 400, 1020), new Point3D(-300, -300, -100), new Vector(2, 2, -3), 1, 0.00001, 0.000005));
 
         ImageWriter imageWriter = new ImageWriter("LevLogo", 1000, 1000, 1000, 1000);
 

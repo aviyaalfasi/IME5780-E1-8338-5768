@@ -16,7 +16,7 @@ public class Vector {
     /**
      * Vector constructor receiving a head value
      * throw IllegalArgumentException in the case of an attempt to create a zero vector
-     * @param point3D is the head of the vector
+     * @param p is the head of the vector
      */
     public Vector(Point3D p) {
         if (p.equals(Point3D.ZERO)) {
@@ -27,7 +27,7 @@ public class Vector {
 
     /**
      * Vector copy constructor- receives another Vector
-     * @param other the vector that is copied
+     * @param v the vector that is copied
      */
     public Vector(Vector v) {
         this(v._head);
@@ -46,9 +46,9 @@ public class Vector {
     /**
      * Vector constructor
      * throw IllegalArgumentException in the case of an attempt to create a zero vector
-     * @param _x Vector projection on the X axis
-     * @param _y Vector projection on the Y axis
-     * @param _z Vector projection on the Z axis
+     * @param x Vector projection on the X axis
+     * @param y Vector projection on the Y axis
+     * @param z Vector projection on the Z axis
      */
     public Vector(double x,double y, double z) {
         this(new Point3D(x,y,z));
@@ -109,7 +109,7 @@ public class Vector {
 
     /**
      * dot product between two vectors
-     * @param other second vector parameter of dot product
+     * @param v second vector parameter of dot product
      * @return scalar (type: double)
      */
 
@@ -122,7 +122,7 @@ public class Vector {
     /**
      * cross product between two vectors
      * throw IllegalArgumentException in case the result vector is zero vector
-     * @param other second vector parameter of cross product
+     * @param v second vector parameter of cross product
      * @return Normal vector (type: Vector)
      */
     public Vector crossProduct(Vector v) {

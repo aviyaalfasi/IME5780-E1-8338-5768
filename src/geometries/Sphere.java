@@ -3,10 +3,10 @@ package geometries;
 import primitives.*;
 
 import java.util.List;
-import java.util.Objects;
+
 
 import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
+
 
 /**
  * Class Sphere is the basic class representing a sphere. It extends the RadialGeometry class.

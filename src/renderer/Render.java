@@ -18,16 +18,31 @@ public class Render {
     private static final int MAX_CALC_COLOR_LEVEL = 50;
     private static final double MIN_CALC_COLOR_K = 0.0000001;
 
-
+    /**
+     * constructor for render
+     * @param _scene scene to render
+     */
     public Render(Scene _scene) {
         this._scene = _scene;
     }
 
+    /**
+     * constructor for render
+     * @param scene scene to render
+     * @param imageWriter image writer
+     */
     public Render(Scene scene, ImageWriter imageWriter) {
         this._imageWriter = imageWriter;
         this._scene = scene;
     }
 
+    /**
+     * @param l
+     * @param n
+     * @param gp GeoPoint
+     * @param lightSource
+     * @return true if point on geometry is not shaded by other objects, otherwise false
+     */
     private boolean unshaded(Vector l, Vector n, GeoPoint gp, LightSource lightSource){
         Vector lightDirection = l.scale(-1); // from point to light source
 
@@ -46,29 +61,14 @@ public class Render {
         }
         return true;
     }
-/**
-    private double transparency(LightSource ls, Vector l, Vector n, GeoPoint geopoint){
-        Vector lightDirection = l.scale(-1); // from point to light source
 
-        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
-        Point3D point = geopoint.getPoint().add(delta);
-        Ray lightRay = new Ray(point, lightDirection, n);
-
-        List<GeoPoint> intersections = _scene.getGeometries().findIntsersections(lightRay);
-        if (intersections == null) {
-            return 1.0;
-        }
-        double lightDistance = ls.getDistance(geopoint.getPoint());
-        double ktr = 1.0;
-        for (GeoPoint gp2 : intersections) {
-            if (alignZero(gp2.getPoint().distance(geopoint.getPoint()) - lightDistance) <= 0)
-                ktr *= geopoint.geometry.getMaterial().getKT();
-            if (ktr < MIN_CALC_COLOR_K) return 0.0;
-
-        }
-        return ktr;
-    }
- */
+    /**
+     * @param light
+     * @param l
+     * @param n
+     * @param geopoint GeoPoint
+     * @return level of transparency of object
+     */
     private double transparency(LightSource light, Vector l, Vector n, GeoPoint geopoint) {
         Vector lightDirection = l.scale(-1); // from point to light source
         Ray lightRay = new Ray(geopoint.getPoint(), lightDirection, n);
@@ -90,6 +90,10 @@ public class Render {
         }
         return ktr;
     }
+
+    /**
+     * @return scene
+     */
     public Scene get_scene() {
         return _scene;
     }
@@ -171,16 +175,21 @@ public class Render {
         }
     }
 
+    /**
+     * use the image writer to create an image from scene
+     */
     public void writeToImage() {
         _imageWriter.writeToImage();
     }
 
     /**
-     * Calculate the color intensity in a point
-     *
-     * @return the color intensity
+     * recursive fucntion to calculate color in certain point
+     * @param coloredPoint GeoPoint- the point on the geometry where color is calculated
+     * @param inRay ray
+     * @param level counts how many times recursion has occured
+     * @param k
+     * @return color of point
      */
-
     private Color calcColor(GeoPoint coloredPoint, Ray inRay, int level, double k) {
         List<LightSource> lightSources = _scene.getLightSources();
         Color result = coloredPoint.getGeometry().getEmissionLight();
@@ -203,7 +212,7 @@ public class Render {
                     double ktr = transparency(lightSource, l, n, coloredPoint);
 
                     if (ktr * k > MIN_CALC_COLOR_K) {
-                    Color ip = lightSource.getIntensity(coloredPoint.getPoint()).scale(ktr);
+                        Color ip = lightSource.getIntensity(coloredPoint.getPoint()).scale(ktr);
                         result = result.add(
                                 calcDiffusive(kd, nl, ip),
                                 calcSpecular(ks, l, n, nl, v, nShininess, ip));
@@ -229,10 +238,16 @@ public class Render {
                 result = result.add(calcColor(refractedPoint, refractedRay,
                         level - 1, kkt).scale(kt));
         }
-            return result;
+        return result;
 
     }
 
+    /**
+     * calls the recursive calcColor function
+     * @param geoPoint GeoPoint- the point on the geometry where color is calculated
+     * @param inRay ray
+     * @return color of point
+     */
     private Color calcColor(GeoPoint geoPoint, Ray inRay) {
         Color color = calcColor(geoPoint, inRay, MAX_CALC_COLOR_LEVEL, 1.0);
         color = color.add(_scene.getAmbientLight().getIntensity());
@@ -271,12 +286,26 @@ public class Render {
         return closestPoint;
     }
 
+    /**
+     * construct a refracted ray
+     * @param pointGeo GeoPoint- the point on the geometry where color is calculated
+     * @param inRay ray
+     * @param n
+     * @return refracted ray
+     */
     private Ray constructRefractedRay(Point3D pointGeo, Ray inRay, Vector n) {
         return new Ray(pointGeo, inRay.getDirection(), n);
     }
 
+    /**
+     * construct a reflected ray
+     * @param pointGeo GeoPoint- the point on the geometry where color is calculated
+     * @param inRay ray
+     * @param n
+     * @return reflected ray
+     */
     private Ray constructReflectedRay(Point3D pointGeo, Ray inRay, Vector n) {
-        //𝒓=𝒗 −𝟐∙(𝒗∙𝒏)∙𝒏
+        //ð’“=ð’— âˆ’ðŸâˆ™(ð’—âˆ™ð’)âˆ™ð’
         Vector v = inRay.getDirection();
         double vn = v.dotProduct(n);
 
@@ -328,10 +357,10 @@ public class Render {
      * @return diffusive component of light reflection
      * @author Dan Zilberstein
      * <p>
-     * The diffuse component is that dot product n•L that we discussed in class. It approximates light, originally
+     * The diffuse component is that dot product nâ€¢L that we discussed in class. It approximates light, originally
      * from light source L, reflecting from a surface which is diffuse, or non-glossy. One example of a non-glossy
      * surface is paper. In general, you'll also want this to have a non-gray color value,
-     * so this term would in general be a color defined as: [rd,gd,bd](n•L)
+     * so this term would in general be a color defined as: [rd,gd,bd](nâ€¢L)
      */
     private Color calcDiffusive(double kd, double nl, Color ip) {
         if (nl < 0) {
@@ -341,6 +370,10 @@ public class Render {
         return ip.scale(nl * kd);
     }
 
+    /**
+     * @param val value
+     * @return sign of value
+     */
     private boolean sign(double val) {
         return (val > 0d);
     }
