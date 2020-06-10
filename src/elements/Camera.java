@@ -5,6 +5,11 @@ import primitives.Ray;
 import primitives.Util;
 import primitives.Vector;
 
+import java.util.ArrayList;
+
+import java.util.List;
+import java.util.Random;
+
 import static primitives.Util.isZero;
 
 /**
@@ -16,6 +21,8 @@ public class Camera {
     Vector _vUp;
     Vector _vRight;
     Vector _vTo;
+    private static final Random rnd = new Random();
+
 
     /**
      * @return the point where camera is located
@@ -62,17 +69,6 @@ public class Camera {
         }
     }
 
-    /**
-     * create a ray through a pixel on the view plane
-     * @param nX number of pixels
-     * @param nY number of pixels
-     * @param j j coordinate of the pixel through which we will create ray
-     * @param i i coordinate of the pixel through which we will create ray
-     * @param screenDistance screen distance from camera
-     * @param screenWidth screen width
-     * @param screenHeight screen height
-     * @return ray that goes through pixel (j,i)
-     */
     public Ray constructRayThroughPixel(int nX, int nY, int j, int i, double screenDistance,
                                         double screenWidth, double screenHeight)
     {
@@ -95,6 +91,55 @@ public class Camera {
         if (!Util.isZero(yi))
         {
             Pij = Pij.add(_vUp.scale(-yi));
+        }
+        Vector Vij = Pij.subtract(_p0);
+        return new Ray(_p0,Vij);
+    }
+
+
+
+    public List<Ray> constructRaysThroughPixel(int nX, int nY, int j, int i, double screenDistance,
+                                               double screenWidth, double screenHeight, int num_of_sample_rays)
+    {
+        if (isZero(screenDistance))
+        {
+            throw new IllegalArgumentException("distance cannot be 0");
+        }
+
+        List<Ray> sample_rays = new ArrayList<>();
+
+        double Ry = screenHeight/nY;
+        double Rx = screenWidth/nX;
+        double yi =  ((i - nY/2d)*Ry);
+        double xj=   ((j - nX/2d)*Rx);
+
+        for (int row = 0; row < num_of_sample_rays; ++row) {
+            for (int column = 0; column < num_of_sample_rays; ++column) {
+                sample_rays.add(constructRaysThroughPixel(num_of_sample_rays, num_of_sample_rays,yi, xj, row, column,screenDistance, Rx, Ry));
+            }
+        }
+        return sample_rays;
+    }
+
+    private Ray constructRaysThroughPixel(int nX, int nY, double yi, double xj, int j, int i, double screenDistance,
+                                         double pixelWidth, double pixelHeight)
+    {
+
+        Point3D Pc = new Point3D( _p0.add(_vTo.scale(screenDistance)));
+        double Ry = pixelHeight/nY;
+        double Rx = pixelWidth/nX;
+        double y_sample_i =  (i *Ry + Ry/2d);
+        double x_sample_j=   (j *Rx + Rx/2d);
+
+        Point3D Pij = Pc;
+
+        if (!Util.isZero(x_sample_j + xj))
+        {
+            Pij = Pij.add(_vRight.scale(x_sample_j + xj));
+        }
+        if (!Util.isZero(y_sample_i + yi))
+        {
+            Pij = Pij.add(_vUp.scale(-y_sample_i -yi ));
         }
         Vector Vij = Pij.subtract(_p0);
         return new Ray(_p0,Vij);

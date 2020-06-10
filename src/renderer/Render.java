@@ -14,10 +14,11 @@ import static primitives.Util.alignZero;
 public class Render {
     private Scene _scene;
     private ImageWriter _imageWriter;
+    private static final boolean IMPROVED_SAMPLE_RAYS = true;
     private static final double DELTA = 0.1;
     private static final int MAX_CALC_COLOR_LEVEL = 50;
     private static final double MIN_CALC_COLOR_K = 0.0000001;
-
+    private static final int NUM_OF_SAMPLE_RAYS = 8; //64 rays 
     /**
      * constructor for render
      * @param _scene scene to render
@@ -117,16 +118,26 @@ public class Render {
         int Nx = _imageWriter.getNx(); //columns
         int Ny = _imageWriter.getNy(); //rows
         //pixels grid
-        for (int row = 0; row < Ny; ++row) {
-            for (int column = 0; column < Nx; ++column) {
-                Ray ray = camera.constructRayThroughPixel(Nx, Ny, column, row, distance, width, height);
-                List<GeoPoint> intersectionPoints = geometries.findIntsersections(ray);
-                if (intersectionPoints == null) {
-                    _imageWriter.writePixel(column, row, background);
-                } else {
-                    GeoPoint closestPoint = getClosestPoint(intersectionPoints);
-                    java.awt.Color pixelColor = calcColor(closestPoint, ray).getColor();
-                    _imageWriter.writePixel(column, row, pixelColor);
+        if (IMPROVED_SAMPLE_RAYS == false) {
+            for (int row = 0; row < Ny; ++row) {
+                for (int column = 0; column < Nx; ++column) {
+                    Ray ray = camera.constructRayThroughPixel(Nx, Ny, column, row, distance, width, height);
+                    List<GeoPoint> intersectionPoints = geometries.findIntsersections(ray);
+                    if (intersectionPoints == null) {
+                        _imageWriter.writePixel(column, row, background);
+                    } else {
+                        GeoPoint closestPoint = getClosestPoint(intersectionPoints);
+                        java.awt.Color pixelColor = calcColor(closestPoint, ray).getColor();
+                        _imageWriter.writePixel(column, row, pixelColor);
+                    }
+                }
+            }
+        }
+        else {
+            for (int row = 0; row < Ny; ++row) {
+                for (int column = 0; column < Nx; ++column) {
+                    List<Ray> rays = camera.constructRaysThroughPixel(Nx, Ny, column, row, distance, width, height, NUM_OF_SAMPLE_RAYS);
+                    _imageWriter.writePixel(column, row, calcColor(rays).getColor());
                 }
             }
         }
@@ -182,6 +193,20 @@ public class Render {
         _imageWriter.writeToImage();
     }
 
+    private Color calcColor(List<Ray> superSamplingRays){
+        Color color = Color.BLACK;
+        for(Ray ray: superSamplingRays){
+            GeoPoint intersectionPoint = findClosestIntersection(ray);
+            if (intersectionPoint == null){
+                color = color.add(_scene.getBackground());
+            }
+            else{
+                color = color.add(calcColor(intersectionPoint, ray));
+            }
+        }
+        color = color.reduce(superSamplingRays.size());
+        return color;
+    }
     /**
      * recursive fucntion to calculate color in certain point
      * @param coloredPoint GeoPoint- the point on the geometry where color is calculated
