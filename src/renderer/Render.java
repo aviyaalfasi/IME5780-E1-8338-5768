@@ -14,7 +14,7 @@ import static primitives.Util.alignZero;
 public class Render {
     private Scene _scene;
     private ImageWriter _imageWriter;
-    private static final boolean IMPROVED_SAMPLE_RAYS = true;
+    private static final boolean IMPROVED_SAMPLE_RAYS = false;
     private static final double DELTA = 0.1;
     private static final int MAX_CALC_COLOR_LEVEL = 50;
     private static final double MIN_CALC_COLOR_K = 0.0000001;
