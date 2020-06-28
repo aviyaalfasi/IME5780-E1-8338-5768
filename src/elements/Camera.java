@@ -13,6 +13,7 @@ import java.util.Random;
 import static primitives.Util.isZero;
 
 /**
+ * Class Camera represents the camera in the scene.
  * @author aviya and sima
  */
 
@@ -53,7 +54,7 @@ public class Camera {
     }
 
     /**
-     * constructor for camera that receives the point where camera is locted, vUp, and vTowards, and creates vRight by cross product of both vectors
+     * constructor for camera that receives the point where camera is located, vUp, and vTowards, and creates vRight by cross product of both vectors
      * @param _p0 camera's location
      * @param _vTo
      * @param _vUp
@@ -69,6 +70,17 @@ public class Camera {
         }
     }
 
+    /**
+     * Receives pixel coordinates and constructs a ray through it.
+     * @param nX number of pixels in X axis
+     * @param nY number of pixels in Y axis
+     * @param j j coordinate of pixel
+     * @param i i coordinate of pixel
+     * @param screenDistance distance of screen from camera
+     * @param screenWidth screen width
+     * @param screenHeight screen height
+     * @return ray through receives pixel
+     */
     public Ray constructRayThroughPixel(int nX, int nY, int j, int i, double screenDistance,
                                         double screenWidth, double screenHeight)
     {
@@ -76,7 +88,7 @@ public class Camera {
         {
             throw new IllegalArgumentException("distance cannot be 0");
         }
-        Point3D Pc = new Point3D( _p0.add(_vTo.scale(screenDistance)));
+        Point3D Pc =  _p0.add(_vTo.scale(screenDistance));
         double Ry = screenHeight/nY;
         double Rx = screenWidth/nX;
         double yi =  ((i - nY/2d)*Ry + Ry/2d);
@@ -97,7 +109,19 @@ public class Camera {
     }
 
 
-
+    /**
+     * Receives pixel coordinates and constructs a beam of rays through it.
+     * This method is used for super sampling. Creating a beam of rays allows a more exact calculation of the color of the pixel.
+     * @param nX number of pixels in X axis
+     * @param nY number of pixels in Y axis
+     * @param j j coordinate of pixel
+     * @param i i coordinate of pixel
+     * @param screenDistance distance of screen from camera
+     * @param screenWidth screen width
+     * @param screenHeight screen height
+     * @param num_of_sample_rays number of sample rays required
+     * @return beam of rays through receives pixel
+     */
     public List<Ray> constructRaysThroughPixel(int nX, int nY, int j, int i, double screenDistance,
                                                double screenWidth, double screenHeight, int num_of_sample_rays)
     {
@@ -118,14 +142,29 @@ public class Camera {
                 sample_rays.add(constructRaysThroughPixel(num_of_sample_rays, num_of_sample_rays,yi, xj, row, column,screenDistance, Rx, Ry));
             }
         }
+        sample_rays.add(constructRayThroughPixel(nX, nY, j, i, screenDistance, screenWidth, screenHeight));
         return sample_rays;
     }
 
+    /**
+     * In this function we treat each pixel like a little screen of its own and divide it to smaller "pixels".
+     * Through each one we construct a ray. This function is similar to ConstructRayThroughPixel.
+     * @param nX number of small "pixels" in "X axis" of original pixel
+     * @param nY number of small "pixels" in "Y axis" of original pixel
+     * @param yi distance of original pixel from (0,0) on Y axis
+     * @param xj distance of original pixel from (0,0) on X axis
+     * @param j j coordinate of small "pixel"
+     * @param i i coordinate of small "pixel"
+     * @param screenDistance distance of screen from camera
+     * @param pixelWidth pixel width
+     * @param pixelHeight pixel height
+     * @return beam of rays through pixel
+     */
     private Ray constructRaysThroughPixel(int nX, int nY, double yi, double xj, int j, int i, double screenDistance,
-                                         double pixelWidth, double pixelHeight)
+                                          double pixelWidth, double pixelHeight)
     {
 
-        Point3D Pc = new Point3D( _p0.add(_vTo.scale(screenDistance)));
+        Point3D Pc = _p0.add(_vTo.scale(screenDistance));
         double Ry = pixelHeight/nY;
         double Rx = pixelWidth/nX;
         double y_sample_i =  (i *Ry + Ry/2d);

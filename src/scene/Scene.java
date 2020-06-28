@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Class Scene represents a scene to be created.
  * @author aviya and sima
  */
 

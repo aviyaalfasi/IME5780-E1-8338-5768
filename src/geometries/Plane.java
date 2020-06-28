@@ -26,9 +26,9 @@ public final class Plane extends Geometry {
      */
     public Plane(Point3D _p1, Point3D _p2, Point3D _p3)
     {
-        Vector vector1 = new Vector(_p1.subtract(_p2));
-        Vector vector2 = new Vector(_p2.subtract(_p3));
-        _normal = new Vector(vector1.crossProduct(vector2));
+        Vector vector1 = (_p1.subtract(_p2));
+        Vector vector2 = (_p2.subtract(_p3));
+        _normal = (vector1.crossProduct(vector2));
         _point = new Point3D(_p1);
     }
 
@@ -42,9 +42,9 @@ public final class Plane extends Geometry {
     public Plane(Point3D _p1, Point3D _p2, Point3D _p3, Color _emmission)
     {
         super(_emmission);
-        Vector vector1 = new Vector(_p1.subtract(_p2));
-        Vector vector2 = new Vector(_p2.subtract(_p3));
-        _normal = new Vector(vector1.crossProduct(vector2));
+        Vector vector1 =(_p1.subtract(_p2));
+        Vector vector2 =(_p2.subtract(_p3));
+        _normal = (vector1.crossProduct(vector2));
         _point = new Point3D(_p1);
     }
 

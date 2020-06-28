@@ -60,7 +60,7 @@ public class Tube extends RadialGeometry {
         Point3D o = _axisRay.getPoint();
         Vector v = _axisRay.getDirection();
 
-        Vector vector1 = new Vector(point3D.subtract(o));
+        Vector vector1 = (point3D.subtract(o));
 
         //We need the projection to multiply the _direction unit vector
         double projection = vector1.dotProduct(v);
@@ -70,7 +70,7 @@ public class Tube extends RadialGeometry {
         }
 
         //This vector is orthogonal to the _direction vector.
-        Vector check = new Vector(point3D.subtract(o));
+        Vector check = (point3D.subtract(o));
         return check.normalized();
     }
 

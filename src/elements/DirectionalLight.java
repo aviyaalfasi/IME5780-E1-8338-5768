@@ -4,11 +4,17 @@ import primitives.Color;
 import primitives.Point3D;
 import primitives.Vector;
 
+/**
+ * Class Directional Light represents a light source that shines in a certain direction.
+ * Extends Light abstract class and implements LightSource interface.
+ * @author aviya and sima
+ */
+
 public class DirectionalLight extends Light implements LightSource{
     private Vector _direction;
 
     /**
-     * constructor for directional light
+     * Constructor for directional light
      * @param _intensity intensity of directional light (color of light)
      * @param _direction direction of light
      */
@@ -19,6 +25,7 @@ public class DirectionalLight extends Light implements LightSource{
     }
 
     /**
+     * Get intensity of light from light source on point
      * @param  p point
      * @return intensity of light in point
      */
@@ -28,6 +35,7 @@ public class DirectionalLight extends Light implements LightSource{
     }
 
     /**
+     * Get L- the vector from the light source to received point
      * @param p point
      * @return L- the vector from the light source to received point
      */
@@ -37,6 +45,7 @@ public class DirectionalLight extends Light implements LightSource{
     }
 
     /**
+     * Get distance of point from light source
      * @param point
      * @return distance of point from light source
      */

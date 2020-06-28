@@ -172,4 +172,13 @@ public class Color {
         return new Color(r, g, b);
     }
 
+    public boolean isColorsEqual(Color color) {
+        Point3D p1 = new Point3D(this._r, this._g, this._b);
+        Point3D p2 = new Point3D(color._r, color._g, color._b);
+        double c1 = Math.sqrt((this._r) * (this._r) + (this._g) * (this._g) + (this._b) * (this._b));
+        double c2 = Math.sqrt((color._r) * (color._r) + (color._g) * (color._g) + (color._b) * (color._b));
+        double avg = (c1 + c2) / 2d;
+        return !(p1.distance(p2) > 0.25 * avg);
+    }
+
 }

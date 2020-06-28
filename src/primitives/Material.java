@@ -1,5 +1,8 @@
 package primitives;
-
+/**
+ * Class Material represents the material of an object in the scene, its shininess, reflectivenes, transparency.
+ * @author Aviya and Sima
+ */
 public class Material {
     double _kD;
     double _kS;
@@ -8,7 +11,7 @@ public class Material {
     double _kR;
 
     /**
-     * constructor for material
+     * Constructor for material
      * @param _kD Diffusion factor of material
      * @param _kS Specular factor of material
      * @param _nShininess Shininess level of material
@@ -18,7 +21,7 @@ public class Material {
     }
 
     /**
-     * constructor for material
+     * Constructor for material
      * @param _kD Diffusion factor of material
      * @param _kS Specular factor of material
      * @param _nShininess Shininess level of material
