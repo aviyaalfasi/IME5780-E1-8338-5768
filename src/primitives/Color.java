@@ -172,7 +172,14 @@ public class Color {
         return new Color(r, g, b);
     }
 
+    /**
+     * @author kayla neyman
+     * This function compares colors and returns a boolean variable whether they are equal or not
+     * @param color the color to compare
+     * @return true if the colors equals, otherwise false
+     */
     public boolean isColorsEqual(Color color) {
+        //thanks to kayla neyman
         Point3D p1 = new Point3D(this._r, this._g, this._b);
         Point3D p2 = new Point3D(color._r, color._g, color._b);
         double c1 = Math.sqrt((this._r) * (this._r) + (this._g) * (this._g) + (this._b) * (this._b));

@@ -123,7 +123,7 @@ public final class Plane extends Geometry {
 
     /**
      * find all intersections of recieved ray with the plane
-     * @param ray
+     * @param ray the ray to find intersection points with
      * @return list of GeopPoints- intersection points with the plane
      */
     @Override

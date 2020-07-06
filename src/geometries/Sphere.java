@@ -23,7 +23,6 @@ public class Sphere extends RadialGeometry {
      * constructor for a new sphere object.
      * @param radius the radius of the sphere
      * @param center the center point of the sphere
-     * @throws Exception in case of negative or zero radius from RadialGeometry constructor
      */
     public Sphere(double radius, Point3D center) {
         super(radius);
@@ -87,7 +86,7 @@ public class Sphere extends RadialGeometry {
 
     /**
      * find all intersections of received ray with the sphere
-     * @param ray
+     * @param ray the ray to  find Intsersections with
      * @return list of GeopPoints- intersection points with the sphere
      */
     public List<GeoPoint> findIntsersections(Ray ray) {
@@ -95,8 +94,8 @@ public class Sphere extends RadialGeometry {
         Vector v = ray.getDirection();
         Vector u;
         try {
-            u = _center.subtract(p0);   // p0 == _center
-        } catch (IllegalArgumentException e) {
+            u = _center.subtract(p0);//vector from camera to center of sphere
+        } catch (IllegalArgumentException e) { //if p0 == _center it is illegal
             return List.of(new GeoPoint(this,(ray.getTargetPoint(_radius))));
         }
         double tm = alignZero(v.dotProduct(u));

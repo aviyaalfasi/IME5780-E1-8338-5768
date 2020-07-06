@@ -62,7 +62,6 @@ public final class Cylinder extends Tube{
      */
     @Override
     public Vector getNormal(Point3D point3D) {
-        //  return super.getNormal(point3D);
         Point3D o = _axisRay.getPoint();
         Vector v = _axisRay.getDirection();
 

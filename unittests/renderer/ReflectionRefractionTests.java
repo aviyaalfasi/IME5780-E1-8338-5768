@@ -13,9 +13,7 @@ import scene.Scene;
 
 
 class ReflectionRefractionTests {
-    /**
-     * Produce a picture of a sphere lighted by a spot light
-     */
+
     @Test
     public void twoSpheres() {
         Scene scene = new Scene("Test scene");
@@ -38,9 +36,7 @@ class ReflectionRefractionTests {
         render.writeToImage();
     }
 
-    /**
-     * Produce a picture of a sphere lighted by a spot light
-     */
+
     @Test
     public void twoSpheresOnMirrors() {
         Scene scene = new Scene("Test scene");
@@ -67,10 +63,7 @@ class ReflectionRefractionTests {
         render.writeToImage();
     }
 
-    /**
-     * Produce a picture of a two triangles lighted by a spot light with a partially transparent Sphere
-     * producing partial shadow
-     */
+    
     @Test
     public void trianglesTransparentSphere() {
         Scene scene = new Scene("Test scene");
@@ -95,9 +88,10 @@ class ReflectionRefractionTests {
         render.renderImage();
         render.writeToImage();
     }
-    //camera center
+
     @Test
     public void our_first_image1() {
+        //camera center
         Scene scene = new Scene("our_masterpiece");
         scene.setCamera(new Camera(new Point3D(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, -1, 0)));
 
@@ -148,10 +142,11 @@ class ReflectionRefractionTests {
         render.renderImage();
         imageWriter.writeToImage();
     }
-    
-    //camera right
+
+
     @Test
     public void our_first_image2() {
+        //camera right
         Scene scene = new Scene("LevLogo_cameraRight_step7");
         Point3D camera_position = new Point3D(500, 0, -1000);
         Point3D center_of_logo = new Point3D(0, 0, -200);
@@ -205,9 +200,10 @@ class ReflectionRefractionTests {
         imageWriter.writeToImage();
     }
 
-    //camera left
+
     @Test
     public void our_first_image3() {
+        //camera left
         Scene scene = new Scene("LevLogo_cameraLeft_step7");
         Point3D camera_position = new Point3D(-400, 0, -1000);
         Point3D center_of_logo = new Point3D(0, 0, -200);
@@ -254,62 +250,6 @@ class ReflectionRefractionTests {
                 new SpotLight(new Color(400, 400, 1020), new Point3D(-300, -300, -100), new Vector(2, 2, -3), 1, 0.00001, 0.000005));
 
         ImageWriter imageWriter = new ImageWriter("LevLogo_cameraLeft_step7", 1000, 1000, 1000, 1000);
-
-        Render render = new Render(scene, imageWriter);
-
-        render.renderImage();
-        imageWriter.writeToImage();
-    }
-
-    //camera up behind
-    @Test
-    public void our_first_image4() {
-        Scene scene = new Scene("LevLogo_cameraUpBehind_step7");
-        Point3D camera_position = new Point3D(0, -1200, -200);
-        Point3D center_of_logo = new Point3D(0, 0, -200);
-        Vector camera_vector = (center_of_logo.subtract(camera_position)).normalize();
-        scene.setCamera(new Camera(camera_position,camera_vector, new Vector(1, 0, 0)));
-        scene.setDistance(1000);
-        scene.setBackground(Color.BLACK);
-        scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
-
-        scene.addGeometries(
-                //וורוד
-                new Triangle(new Color(128, 49, 106), new Material(1, 1, 50000, 0.4, 0), new Point3D(0, 0, -200),
-                        new Point3D(109.12, -63, -200),
-                        new Point3D(109.12, 63, -200)),
-
-                //  אמצע ימין
-                new Triangle(new Color(52, 38, 97), new Material(1, 1, 50000, 0.4, 0), new Point3D(0, 0, -200),
-                        new Point3D(0, 126, -200),
-                        new Point3D(109.12, 63, -200)),
-
-                // אמצע שמאל
-                new Triangle(new Color(26, 98, 157), new Material(1, 1, 50000, 0.4, 0), new Point3D(0, 0, -200),
-                        new Point3D(0, 126, -200),
-                        new Point3D(-109.12, 63, -200)),
-
-                //ימין
-                new Triangle(new Color(27, 155, 192), new Material(1, 1, 50000, 0.4, 0), new Point3D(0, 0, -200),
-                        new Point3D(-109.12, -63, -200),
-                        new Point3D(-109.12, 63, -200)),
-
-                new Sphere(192, new Point3D(0, 0, -200), Color.BLACK, new Material(0.8, 0.8, 30, 0.8, 0)),
-
-                new Sphere(148, new Point3D(0, 0, -200), Color.BLACK, new Material(0.8, 0.8, 30, 0.8, 0)),
-
-                new Triangle(Color.BLACK, new Material(0.8, 1, 10000, 0, 1),
-                        new Point3D(500, 200, -100), new Point3D(-500, 200, -100), new Point3D(1800, 200, -700)),
-
-                new Triangle(Color.BLACK, new Material(0.8, 1, 10000, 0, 1),
-                        new Point3D(-500, 200, -100), new Point3D(1800, 200, -700), new Point3D(-1800, 200, -700))
-        );
-
-        scene.addLights(new DirectionalLight(new Color(10, 10, 10), new Vector(1, -1, 0)),
-
-                new SpotLight(new Color(400, 400, 1020), new Point3D(-300, -300, -100), new Vector(2, 2, -3), 1, 0.00001, 0.000005));
-
-        ImageWriter imageWriter = new ImageWriter("LevLogo_cameraUpBehind_step7", 1000, 1000, 1000, 1000);
 
         Render render = new Render(scene, imageWriter);
 
@@ -423,7 +363,6 @@ class ReflectionRefractionTests {
 
 
 
-                //new Sphere(170, new Point3D(0, 10, -200), Color.BLACK, new Material(0.8, 0.8, 30, 0.8, 0)),
 
                 new Triangle(Color.BLACK, new Material(0.8, 1, 10000, 0, 2.5),
                         new Point3D(500, 200, 0), new Point3D(-500, 200, 0), new Point3D(1800, 200, -1500)),
@@ -442,7 +381,7 @@ class ReflectionRefractionTests {
         ImageWriter imageWriter = new ImageWriter("LevLogo", 1000, 1000, 1000, 1000);
 
         Render render = new Render(scene, imageWriter,true,true);
-
+        render.setMultithreading(4); //set num of threads
         render.renderImage();
         imageWriter.writeToImage();
     }

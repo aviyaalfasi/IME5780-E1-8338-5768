@@ -41,7 +41,7 @@ public class Geometries implements Intersectable {
 
     /**
      * the function get a ray and returns list of intersection points with all the geometries collection
-     * @param ray
+     * @param ray the ray to find intersections with
      * @return list of Point3D that intersect the osef
      */
     @Override

@@ -13,7 +13,7 @@ import java.util.Objects;
 public interface Intersectable {
     /**
      * find all intersections of recieved ray with the geometries in the scene
-     * @param ray
+     * @param ray the ray to find intersection points with
      * @return list of GeopPoints- intersection points with the geometries they are on
      */
     List<GeoPoint> findIntsersections(Ray ray);
@@ -27,8 +27,8 @@ public interface Intersectable {
 
         /**
          * constructor that recieves both parameters in GeoPoint
-         * @param _geometry
-         * @param _point
+         * @param _geometry geometry
+         * @param _point point on geometry
          */
         public GeoPoint(Geometry _geometry, Point3D _point) {
             this.geometry = _geometry;
@@ -50,7 +50,7 @@ public interface Intersectable {
         }
 
         /**
-         * @param o
+         * @param o to equal too
          * @return  whether recieved GeoPoint o is equal to this one
          */
         @Override

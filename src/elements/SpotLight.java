@@ -46,18 +46,20 @@ public class SpotLight extends PointLight {
      */
     @Override
     public Color getIntensity(Point3D p) {
+        //dot product of light-direction vector and vector from light source to point
         double projection = _direction.dotProduct(getL(p));
 
         if (Util.isZero(projection)) {
             return Color.BLACK;
         }
         double factor = Math.max(0, projection);
-        Color pointlightIntensity = super.getIntensity(p);
+        Color pointlightIntensity = super.getIntensity(p);//intensity of light source
 
         if (_concentration != 1) {
             factor = Math.pow(factor, _concentration);
         }
 
+        //scale the intensity with factor
         return (pointlightIntensity.scale(factor));
     }
 

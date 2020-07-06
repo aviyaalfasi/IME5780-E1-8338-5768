@@ -17,7 +17,7 @@ public class Polygon extends Geometry {
      */
     protected List<Point3D> _vertices;
     /**
-     * Associated plane in which the polygon lays
+     * //Associated plane in which the polygon lays
      */
     protected Plane _plane;
 
@@ -126,13 +126,19 @@ public class Polygon extends Geometry {
         }
     }
 
+    /**
+     * parameters constructor
+     * @param _emmission the emmission of polygon
+     * @param _material the material of polygon
+     * @param vertices the vertices of polygon
+     */
     public Polygon(Color _emmission, Material _material, Point3D... vertices) {
         this(_emmission, vertices);
         this._material = _material;
     }
 
     /**
-     * @param point
+     * @param point point to get normal from
      * @return normal to recieved point in the polygon
      */
     @Override
@@ -142,32 +148,32 @@ public class Polygon extends Geometry {
 
     /**
      * find all intersections of recieved ray with the polygon
-     * @param ray
+     * @param ray ray to fond intersections with
      * @return list of GeopPoints- intersection points with the polygon
      */
     @Override
     public List<GeoPoint> findIntsersections(Ray ray) {
         List<GeoPoint> intersections = _plane.findIntsersections(ray);
-        if (intersections == null)
+        if (intersections == null)  
             return null;
 
-        Point3D p0 = ray.getPoint();
+        Point3D p0 = ray.getPoint(); //the start ray point
         Vector v = ray.getDirection();
 
-        Vector v1  = _vertices.get(1).subtract(p0);
-        Vector v2 = _vertices.get(0).subtract(p0);
+        Vector v1  = _vertices.get(1).subtract(p0); //vector from the ray start point to the polygon vertices
+        Vector v2 = _vertices.get(0).subtract(p0); //vector from the ray start point to the polygon vertices
         double sign = v.dotProduct(v1.crossProduct(v2));
-        if (isZero(sign))
+        if (isZero(sign))//out of the polygon
             return null;
 
         boolean positive = sign > 0;
 
-        for (int i = _vertices.size() - 1; i > 0; --i) {
+        for (int i = _vertices.size() - 1; i > 0; --i) { //foreach vertices
             v1 = v2;
-            v2 = _vertices.get(i).subtract(p0);
+            v2 = _vertices.get(i).subtract(p0);//vector from the ray start point to the polygon vertices
             sign = alignZero(v.dotProduct(v1.crossProduct(v2)));
-            if (isZero(sign)) return null;
-            if (positive != (sign >0)) return null;
+            if (isZero(sign)) return null; //out of the polygon
+            if (positive != (sign >0)) return null;//out of the polygon
         }
 
         intersections.get(0).geometry = this;

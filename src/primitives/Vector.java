@@ -19,7 +19,7 @@ public class Vector {
      * @param p is the head of the vector
      */
     public Vector(Point3D p) {
-        if (p.equals(Point3D.ZERO)) {
+        if (p.equals(Point3D.ZERO)) { //its impossible to create zero vector
             throw new IllegalArgumentException("Point3D(0.0,0.0,0.0) not valid for vector head");
         }
         this._head = new Point3D(p._x._coord, p._y._coord, p._z._coord);
@@ -86,10 +86,11 @@ public class Vector {
     /**
      *Vector multiplication with scalar
      * @param scalingFacor the scalar number
+     * @return new vector
      */
     public Vector scale(double scalingFacor) {
         return new Vector(
-                new Point3D(
+                new Point3D( //multiplication the point coordinates with scalar
                         new Coordinate(scalingFacor * _head._x._coord),
                         new Coordinate(scalingFacor * _head._y._coord),
                         new Coordinate(scalingFacor * _head._z._coord)));
@@ -157,6 +158,7 @@ public class Vector {
     /**
      * A method that receives a vector and normalizes this vector
      * throw ArithmeticException in case the length of the vector is zero
+     * @return new normalizes vector
      */
     public Vector normalize() {
 
@@ -166,9 +168,10 @@ public class Vector {
 
         double length = this.length();
 
-        if (length == 0)
+        if (length == 0) //in case divide by Zero
             throw new ArithmeticException("divide by Zero");
 
+        //The difference of coordinates in vector length
         this._head._x = new Coordinate(x / length);
         this._head._y = new Coordinate(y / length);
         this._head._z = new Coordinate(z / length);

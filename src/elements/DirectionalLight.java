@@ -46,7 +46,7 @@ public class DirectionalLight extends Light implements LightSource{
 
     /**
      * Get distance of point from light source
-     * @param point
+     * @param point point to get distance from
      * @return distance of point from light source
      */
     @Override

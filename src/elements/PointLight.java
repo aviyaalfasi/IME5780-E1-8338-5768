@@ -71,7 +71,7 @@ public class PointLight extends Light implements LightSource{
     }
 
     /**
-     * @param point
+     * @param point point to get distance from
      * @return distance from light to point
      */
     @Override

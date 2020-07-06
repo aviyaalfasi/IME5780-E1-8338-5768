@@ -16,10 +16,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class PolygonTest {
 
-    /**
-     * Test method for
-     * {@link geometries.Polygon//Polygon(primitives.Point3D, primitives.Point3D, primitives.Point3D, primitives.Point3D)}.
-     */
+
     @Test
     public void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
@@ -85,9 +82,7 @@ public class PolygonTest {
     }
 
 
-    /**
-     * Test method for {@link geometries.Polygon#getNormal(primitives.Point3D)}.
-     */
+
     @Test
     public void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
