@@ -17,7 +17,7 @@ public class Polygon extends Geometry {
      */
     protected List<Point3D> _vertices;
     /**
-     * //Associated plane in which the polygon lays
+     * Associated plane in which the polygon lays
      */
     protected Plane _plane;
 
@@ -31,7 +31,7 @@ public class Polygon extends Geometry {
      *                                  <ul>
      *                                  <li>Less than 3 vertices</li>
      *                                  <li>Consequent vertices are in the same
-     *                                  point
+     *                                  point</li>
      *                                  <li>The vertices are not in the same
      *                                  plane</li>
      *                                  <li>The order of vertices is not according
@@ -39,6 +39,7 @@ public class Polygon extends Geometry {
      *                                  <li>Three consequent vertices lay in the
      *                                  same line (180&#176; angle between two
      *                                  consequent edges)
+     *                                  </li>
      *                                  <li>The polygon is concave (not convex></li>
      *                                  </ul>
      */
